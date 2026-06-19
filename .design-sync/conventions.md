@@ -71,7 +71,7 @@ Several components are composed from sub-parts (all importable from the package)
 ## Example
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Badge } from "design-system";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Badge } from "@kornorg/design-system";
 
 function PlanCard() {
 	return (

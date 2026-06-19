@@ -4,7 +4,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "design-system";
+} from "@kornorg/design-system";
 
 export const Default = () => (
 	<TooltipProvider>

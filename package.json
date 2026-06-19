@@ -1,7 +1,22 @@
 {
-  "name": "design-system",
+  "name": "@kornorg/design-system",
   "version": "0.1.0",
-  "private": true,
+  "description": "Modern Neutral — a React + Tailwind CSS design system (components, tokens, Geist fonts).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kornsour/design-system.git"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "components",
+    "tailwindcss",
+    "ui"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "packageManager": "pnpm@10.34.4+sha512.h2i+VSAK4/Iia2Un/Momh+FLxOXxLXchoPJdo99HkVF3BYZI20F3uvNIEg+guidS2NjZP2vq8f5krhjajelhrw==",
   "engines": {
     "node": ">=24"

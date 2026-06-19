@@ -7,7 +7,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "design-system";
+} from "@kornorg/design-system";
 
 export const Confirmation = () => (
 	<Dialog defaultOpen>

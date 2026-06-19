@@ -8,12 +8,12 @@ radius, soft shadows, full light + dark mode.
 ## Using it in an app
 
 ```bash
-pnpm add design-system   # workspace / git / published dependency
+pnpm add @kornorg/design-system   # workspace / git / published dependency
 ```
 
 ```tsx
-import { Button, Card, CardHeader, CardTitle } from "design-system";
-import "design-system/styles.css"; // tokens + utilities + Geist fonts
+import { Button, Card, CardHeader, CardTitle } from "@kornorg/design-system";
+import "@kornorg/design-system/styles.css"; // tokens + utilities + Geist fonts
 
 export function Example() {
 	return (
@@ -29,7 +29,7 @@ export function Example() {
 `styles.css` is self-contained (component styles, the full semantic-token utility
 vocabulary, and the Geist `@font-face` faces) — no Tailwind setup required in the
 consuming app. Dark mode: add `class="dark"` to a root element. Token values are
-also importable from `design-system/tokens`.
+also importable from `@kornorg/design-system/tokens`.
 
 ## Developing
 

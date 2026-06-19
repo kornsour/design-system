@@ -6,7 +6,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "design-system";
+} from "@kornorg/design-system";
 
 export const Default = () => (
 	<Table>

@@ -1,4 +1,4 @@
-import { Checkbox, Label } from "design-system";
+import { Checkbox, Label } from "@kornorg/design-system";
 
 const inline: React.CSSProperties = { display: "flex", alignItems: "center", gap: 8 };
 const col: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 12 };

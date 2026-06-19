@@ -1,5 +1,5 @@
 {
-	"pkg": "design-system",
+	"pkg": "@kornorg/design-system",
 	"globalName": "ModernNeutral",
 	"shape": "package",
 	"projectId": "bfeff1a8-30b8-472e-a5a0-bb772e979018",

@@ -1,4 +1,4 @@
-import { Label, Textarea } from "design-system";
+import { Label, Textarea } from "@kornorg/design-system";
 
 const field: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6, maxWidth: 380 };
 

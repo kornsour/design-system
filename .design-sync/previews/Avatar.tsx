@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "design-system";
+import { Avatar, AvatarFallback } from "@kornorg/design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 8, alignItems: "center" };
 

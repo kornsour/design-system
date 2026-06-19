@@ -6,7 +6,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "design-system";
+} from "@kornorg/design-system";
 
 export const Default = () => (
 	<Card style={{ maxWidth: 360 }}>

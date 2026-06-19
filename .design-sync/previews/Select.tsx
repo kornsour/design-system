@@ -5,7 +5,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "design-system";
+} from "@kornorg/design-system";
 
 const field: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6, width: 240 };
 

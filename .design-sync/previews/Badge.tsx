@@ -1,4 +1,4 @@
-import { Badge } from "design-system";
+import { Badge } from "@kornorg/design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" };
 

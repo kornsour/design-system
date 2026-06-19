@@ -1,4 +1,4 @@
-import { Button } from "design-system";
+import { Button } from "@kornorg/design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" };
 
