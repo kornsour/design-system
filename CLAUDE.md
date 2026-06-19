@@ -2,7 +2,29 @@
 
 ## Project Overview
 
-This is a Next.js (App Router) TypeScript template with Tailwind CSS, Biome, Vitest, Playwright, and Drizzle ORM connected to NeonDB (serverless Postgres).
+This is a **design system** package built on Next.js (App Router) with Tailwind CSS v4, Biome, Vitest, Playwright, and Drizzle ORM connected to NeonDB (serverless Postgres). It exposes a token-driven React component library that is kept in sync with Claude Design (claude.ai/design) via the `/design-sync` skill, which reads the tokens and components directly from this repo.
+
+## Design System
+
+The design system is "Modern Neutral" — zinc neutrals with an indigo accent, 8px base radius, soft shadows, light + dark mode.
+
+- **Tokens** live in two places that must stay in sync:
+  - `src/app/globals.css` — semantic CSS custom properties (`--background`, `--primary`, `--radius`, shadows, …) for both light (`:root`) and dark (`.dark`) modes, exposed to Tailwind utilities (`bg-primary`, `text-muted-foreground`, `rounded-lg`, …) via the `@theme inline` block.
+  - `src/tokens.ts` — the same values as a typed export, for code that needs token values directly (charts, canvas, email).
+- **Components** live in `src/components/ui/`, one file per component, re-exported from `src/components/ui/index.ts`. Import via `@/components/ui`.
+  - Variants use `class-variance-authority` (cva); class merging uses `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
+  - Interactive components (Dialog, Select, Checkbox, Switch, Tabs, Tooltip, Label, Avatar) wrap **Radix UI** primitives (the unified `radix-ui` package) and carry `"use client"`. Icons are from `lucide-react`. Enter/exit animations come from `tw-animate-css`.
+  - Components consume **semantic token utilities only** (`bg-primary`, `border-input`, …) — never hard-coded colors like `bg-indigo-600`. This is what lets the whole system re-skin by editing tokens.
+- **Dark mode** is class-based: the `dark` variant is defined in `globals.css` and toggled by adding the `dark` class to `<html>` (see `src/components/theme-toggle.tsx`).
+- **Showcase**: `/design-system` (`src/app/design-system/page.tsx`) renders every component for visual review.
+
+### Conventions when adding a component
+1. Create `src/components/ui/<name>.tsx`; use `cn()` and cva for variants; semantic tokens only.
+2. Add `"use client"` if it uses Radix, state, or event handlers.
+3. Export it from `src/components/ui/index.ts` and add an example to the showcase page.
+4. Run `pnpm check:fix` and `SKIP_ENV_VALIDATION=1 pnpm build` before committing.
+
+To push changes to Claude Design, run `/design-sync` in Claude Code.
 
 ## Decisions & Docs
 

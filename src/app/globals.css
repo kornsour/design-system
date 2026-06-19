@@ -1,22 +1,153 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* Class-based dark mode: `.dark` on <html> activates the dark token set. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================================
+ * Design Tokens — "Modern Neutral"
+ *
+ * Single source of truth for the design system. Semantic tokens are declared
+ * here as CSS custom properties (light + dark) and exposed to Tailwind utility
+ * classes via the @theme block below, so you can write `bg-background`,
+ * `text-muted-foreground`, `border-border`, `rounded-lg`, etc.
+ *
+ * These mirror the typed values in `src/tokens.ts`. Change them together.
+ * ========================================================================== */
 
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
+	/* Surfaces & text */
+	--background: oklch(1 0 0); /* white */
+	--foreground: oklch(0.21 0.006 285.9); /* zinc-900 */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.21 0.006 285.9);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.21 0.006 285.9);
+
+	/* Muted / subtle */
+	--muted: oklch(0.967 0.001 286.4); /* zinc-100 */
+	--muted-foreground: oklch(0.552 0.016 285.9); /* zinc-500 */
+
+	/* Brand accent (indigo) */
+	--primary: oklch(0.585 0.233 277.1); /* indigo-600 */
+	--primary-foreground: oklch(0.985 0 0); /* near-white */
+
+	/* Secondary (neutral fill) */
+	--secondary: oklch(0.967 0.001 286.4); /* zinc-100 */
+	--secondary-foreground: oklch(0.21 0.006 285.9);
+
+	--accent: oklch(0.967 0.001 286.4);
+	--accent-foreground: oklch(0.21 0.006 285.9);
+
+	/* Status */
+	--destructive: oklch(0.577 0.245 27.3); /* red-600 */
+	--destructive-foreground: oklch(0.985 0 0);
+	--success: oklch(0.596 0.145 163.2); /* emerald-600 */
+	--success-foreground: oklch(0.985 0 0);
+	--warning: oklch(0.769 0.166 70.1); /* amber-500 */
+	--warning-foreground: oklch(0.21 0.006 285.9);
+
+	/* Lines & inputs */
+	--border: oklch(0.92 0.004 286.3); /* zinc-200 */
+	--input: oklch(0.92 0.004 286.3);
+	--ring: oklch(0.585 0.233 277.1); /* matches primary */
+
+	/* Radius scale (base = 0.5rem / 8px) */
+	--radius: 0.5rem;
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	/* Soft elevation shadows */
+	--shadow-xs: 0 1px 2px 0 oklch(0.21 0.006 285.9 / 0.05);
+	--shadow-sm:
+		0 1px 3px 0 oklch(0.21 0.006 285.9 / 0.1), 0 1px 2px -1px oklch(0.21 0.006 285.9 / 0.1);
+	--shadow-md:
+		0 4px 6px -1px oklch(0.21 0.006 285.9 / 0.1), 0 2px 4px -2px oklch(0.21 0.006 285.9 / 0.1);
+	--shadow-lg:
+		0 10px 15px -3px oklch(0.21 0.006 285.9 / 0.1), 0 4px 6px -4px oklch(0.21 0.006 285.9 / 0.1);
 }
 
+.dark {
+	--background: oklch(0.21 0.006 285.9); /* zinc-900 */
+	--foreground: oklch(0.985 0 0);
+	--card: oklch(0.27 0.006 286); /* zinc-800 */
+	--card-foreground: oklch(0.985 0 0);
+	--popover: oklch(0.27 0.006 286);
+	--popover-foreground: oklch(0.985 0 0);
+
+	--muted: oklch(0.27 0.006 286);
+	--muted-foreground: oklch(0.712 0.013 286.1); /* zinc-400 */
+
+	--primary: oklch(0.673 0.182 276.9); /* indigo-500, brighter on dark */
+	--primary-foreground: oklch(0.21 0.006 285.9);
+
+	--secondary: oklch(0.27 0.006 286);
+	--secondary-foreground: oklch(0.985 0 0);
+
+	--accent: oklch(0.37 0.012 285.8); /* zinc-700 */
+	--accent-foreground: oklch(0.985 0 0);
+
+	--destructive: oklch(0.704 0.191 22.2); /* red-500 */
+	--destructive-foreground: oklch(0.985 0 0);
+	--success: oklch(0.696 0.17 162.5); /* emerald-500 */
+	--success-foreground: oklch(0.21 0.006 285.9);
+	--warning: oklch(0.828 0.189 84.4); /* amber-400 */
+	--warning-foreground: oklch(0.21 0.006 285.9);
+
+	--border: oklch(1 0 0 / 0.1);
+	--input: oklch(1 0 0 / 0.15);
+	--ring: oklch(0.673 0.182 276.9);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+	--shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.4), 0 1px 2px -1px oklch(0 0 0 / 0.4);
+	--shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.4), 0 2px 4px -2px oklch(0 0 0 / 0.4);
+	--shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.5), 0 4px 6px -4px oklch(0 0 0 / 0.5);
+}
+
+/* Expose tokens to Tailwind utilities (bg-*, text-*, border-*, rounded-*, …) */
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	--radius-sm: var(--radius-sm);
+	--radius-md: var(--radius-md);
+	--radius-lg: var(--radius-lg);
+	--radius-xl: var(--radius-xl);
+
+	--shadow-xs: var(--shadow-xs);
+	--shadow-sm: var(--shadow-sm);
+	--shadow-md: var(--shadow-md);
+	--shadow-lg: var(--shadow-lg);
+
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
+* {
+	border-color: var(--border);
 }
 
 body {
