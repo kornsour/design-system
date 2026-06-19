@@ -33,9 +33,10 @@ Each record uses a short [MADR](https://adr.github.io/madr/)-style template:
 | [0002](./0002-package-manager-pnpm-pinned.md) | Pin the package manager (pnpm 10.x via `packageManager`) | Accepted |
 | [0003](./0003-node-version-pinning.md) | Pin Node.js 24 LTS via `.nvmrc` and `engines` | Accepted |
 | [0004](./0004-biome-for-lint-and-format.md) | Use Biome for linting and formatting | Accepted |
-| [0005](./0005-data-layer-drizzle-neon.md) | Use Drizzle ORM with Neon serverless Postgres | Accepted |
-| [0006](./0006-type-safe-env.md) | Validate environment variables at the boundary | Accepted |
-| [0007](./0007-server-actions-next-safe-action.md) | Use next-safe-action for Server Actions | Accepted |
+| 0005 | Use Drizzle ORM with Neon serverless Postgres | Superseded by ADR-0011 |
+| 0006 | Validate environment variables at the boundary | Superseded by ADR-0011 |
+| 0007 | Use next-safe-action for Server Actions | Superseded by ADR-0011 |
 | [0008](./0008-e2e-local-only.md) | Run Playwright E2E locally, not in CI | Accepted |
 | [0009](./0009-security-headers.md) | Set baseline HTTP security headers | Accepted |
 | [0010](./0010-unit-testing-vitest.md) | Unit test with Vitest in a Node environment | Accepted |
+| [0011](./0011-design-system-package.md) | Repurpose the repo as a distributable design-system package | Accepted |

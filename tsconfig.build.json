@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"incremental": false,
+		"ignoreDeprecations": "6.0",
+		"noEmit": false,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"plugins": []
+	},
+	"include": ["src/components/ui", "src/tokens.ts", "src/lib"]
+}
