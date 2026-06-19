@@ -13,7 +13,7 @@ pnpm add @kornorg/design-system   # workspace / git / published dependency
 
 ```tsx
 import { Button, Card, CardHeader, CardTitle } from "@kornorg/design-system";
-import "@kornorg/design-system/styles.css"; // tokens + utilities + Geist fonts
+import "@kornorg/design-system/themes/modern-neutral.css"; // pick a feel
 
 export function Example() {
 	return (
@@ -26,10 +26,22 @@ export function Example() {
 }
 ```
 
-`styles.css` is self-contained (component styles, the full semantic-token utility
-vocabulary, and the Geist `@font-face` faces) — no Tailwind setup required in the
-consuming app. Dark mode: add `class="dark"` to a root element. Token values are
-also importable from `@kornorg/design-system/tokens`.
+Each theme stylesheet is self-contained (component styles, the full semantic-token
+utility vocabulary, and the Geist `@font-face` faces) — no Tailwind setup required
+in the consuming app. Dark mode: add `class="dark"` to a root element. Token values
+are also importable from `@kornorg/design-system/tokens`.
+
+### Feels (themes)
+
+The same components ship in multiple "feels" — pick one by importing its stylesheet:
+
+| Feel | Import | Look |
+|------|--------|------|
+| Modern Neutral | `@kornorg/design-system/themes/modern-neutral.css` | Zinc neutrals, indigo accent, 8px radius |
+| soundkata | `@kornorg/design-system/themes/soundkata.css` | Dark-first studio feel, electric azure, 6px radius |
+
+`@kornorg/design-system/styles.css` re-exports Modern Neutral as the default. Each
+feel also has its own Claude Design project (see `.design-sync/`).
 
 ## Developing
 

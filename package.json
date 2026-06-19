@@ -33,7 +33,8 @@
       "types": "./dist/tokens.d.ts",
       "import": "./dist/tokens.mjs"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./themes/*": "./dist/themes/*"
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -42,7 +43,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "tsup && node scripts/postbuild.mjs && pnpm run build:css",
-    "build:css": "tailwindcss -i ./src/styles/package.css -o ./dist/styles.css --minify && node -e \"require('node:fs').cpSync('src/styles/fonts','dist/fonts',{recursive:true})\"",
+    "build:css": "node scripts/build-css.mjs",
     "build:showcase": "next build",
     "prepack": "pnpm run build",
     "check": "biome check .",

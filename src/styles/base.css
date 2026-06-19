@@ -1,0 +1,68 @@
+/* Feel-agnostic base layer shared by every theme.
+ *
+ * Brings in Tailwind, maps semantic tokens to utilities (@theme inline), and
+ * force-generates the full token-utility vocabulary. It defines NO token
+ * VALUES — a theme file (src/styles/themes/<feel>.css) imports this and supplies
+ * the :root / .dark values, which is what gives each feel its look. */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Class-based dark mode: `.dark` on a root element activates the dark token set. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Force-generate semantic color utilities (+ hover/focus-visible variants) so
+   consumers and the Claude Design agent can use the full vocabulary. */
+@source inline("{,hover:,focus-visible:}{bg,text,border,ring}-{background,foreground,card,card-foreground,popover,popover-foreground,primary,primary-foreground,secondary,secondary-foreground,muted,muted-foreground,accent,accent-foreground,destructive,destructive-foreground,success,success-foreground,warning,warning-foreground,border,input,ring}");
+@source inline("rounded-{sm,md,lg,xl,full}");
+@source inline("shadow-{xs,sm,md,lg}");
+
+/* Map semantic tokens → Tailwind utilities. The var() targets are defined by
+   whichever theme imports this file. */
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	--radius-sm: var(--radius-sm);
+	--radius-md: var(--radius-md);
+	--radius-lg: var(--radius-lg);
+	--radius-xl: var(--radius-xl);
+
+	--shadow-xs: var(--shadow-xs);
+	--shadow-sm: var(--shadow-sm);
+	--shadow-md: var(--shadow-md);
+	--shadow-lg: var(--shadow-lg);
+
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+* {
+	border-color: var(--border);
+}
+
+body {
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans), system-ui, sans-serif;
+}

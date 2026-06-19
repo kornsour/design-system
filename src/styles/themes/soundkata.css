@@ -1,0 +1,92 @@
+/* soundkata — electronic-music-production feel for the soundkata learning site.
+ * Dark-first "studio" aesthetic: deep blue-black neutrals, electric azure/cyan
+ * accent, vivid teal success, tighter 6px radius. Designed to shine in dark mode
+ * (add class="dark"); a clean cool-light variant is provided too. */
+@import "../base.css";
+@import "../fonts.css";
+
+:root {
+	--background: oklch(0.985 0.004 240);
+	--foreground: oklch(0.18 0.03 255);
+	--card: oklch(0.995 0.003 240);
+	--card-foreground: oklch(0.18 0.03 255);
+	--popover: oklch(0.995 0.003 240);
+	--popover-foreground: oklch(0.18 0.03 255);
+
+	--muted: oklch(0.95 0.012 245);
+	--muted-foreground: oklch(0.5 0.03 250);
+
+	--primary: oklch(0.58 0.17 245);
+	--primary-foreground: oklch(0.99 0.01 240);
+
+	--secondary: oklch(0.94 0.016 245);
+	--secondary-foreground: oklch(0.25 0.04 255);
+
+	--accent: oklch(0.94 0.016 245);
+	--accent-foreground: oklch(0.25 0.04 255);
+
+	--destructive: oklch(0.6 0.23 18);
+	--destructive-foreground: oklch(0.99 0 0);
+	--success: oklch(0.65 0.16 168);
+	--success-foreground: oklch(0.15 0.02 255);
+	--warning: oklch(0.8 0.16 75);
+	--warning-foreground: oklch(0.18 0.03 255);
+
+	--border: oklch(0.9 0.012 245);
+	--input: oklch(0.9 0.012 245);
+	--ring: oklch(0.58 0.17 245);
+
+	--radius: 0.375rem;
+	--radius-sm: calc(var(--radius) - 2px);
+	--radius-md: calc(var(--radius) - 1px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0.18 0.03 255 / 0.06);
+	--shadow-sm: 0 1px 3px 0 oklch(0.18 0.03 255 / 0.12), 0 1px 2px -1px oklch(0.18 0.03 255 / 0.12);
+	--shadow-md:
+		0 4px 6px -1px oklch(0.18 0.03 255 / 0.12), 0 2px 4px -2px oklch(0.18 0.03 255 / 0.12);
+	--shadow-lg:
+		0 10px 20px -3px oklch(0.18 0.03 255 / 0.16), 0 4px 6px -4px oklch(0.18 0.03 255 / 0.16);
+
+	--font-geist-sans:
+		"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--font-geist-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+.dark {
+	--background: oklch(0.17 0.025 258);
+	--foreground: oklch(0.96 0.01 240);
+	--card: oklch(0.21 0.028 258);
+	--card-foreground: oklch(0.96 0.01 240);
+	--popover: oklch(0.21 0.028 258);
+	--popover-foreground: oklch(0.96 0.01 240);
+
+	--muted: oklch(0.26 0.028 258);
+	--muted-foreground: oklch(0.7 0.025 250);
+
+	--primary: oklch(0.72 0.155 232);
+	--primary-foreground: oklch(0.16 0.03 258);
+
+	--secondary: oklch(0.28 0.032 258);
+	--secondary-foreground: oklch(0.96 0.01 240);
+
+	--accent: oklch(0.33 0.045 255);
+	--accent-foreground: oklch(0.96 0.01 240);
+
+	--destructive: oklch(0.68 0.2 18);
+	--destructive-foreground: oklch(0.98 0 0);
+	--success: oklch(0.74 0.16 170);
+	--success-foreground: oklch(0.16 0.03 258);
+	--warning: oklch(0.83 0.17 80);
+	--warning-foreground: oklch(0.16 0.03 258);
+
+	--border: oklch(1 0 0 / 0.12);
+	--input: oklch(1 0 0 / 0.16);
+	--ring: oklch(0.72 0.155 232);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.4);
+	--shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.5), 0 1px 2px -1px oklch(0 0 0 / 0.5);
+	--shadow-md: 0 4px 8px -1px oklch(0 0 0 / 0.5), 0 2px 4px -2px oklch(0 0 0 / 0.5);
+	--shadow-lg: 0 12px 24px -4px oklch(0 0 0 / 0.6), 0 4px 8px -4px oklch(0 0 0 / 0.55);
+}
