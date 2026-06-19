@@ -6,6 +6,7 @@
 	"tsconfig": "./tsconfig.json",
 	"srcDir": "src/components/ui",
 	"cssEntry": "ds-compiled.css",
+	"extraFonts": "../../.design-sync/fonts/geist.css",
 	"readmeHeader": ".design-sync/conventions.md",
 	"overrides": {
 		"Dialog": { "cardMode": "single", "viewport": "700x420" },

@@ -62,11 +62,14 @@ missing, bundle complete with no warnings.
   are regenerated, not committed. A re-sync MUST re-run the tsc emit and the
   Tailwind compile (commands above) before `package-build.mjs`, or it falls back
   to empty contracts / unstyled CSS.
-- **Brand font (Geist) is NOT shipped.** Host apps load it via `next/font`; the
-  bundle defines a system-sans fallback for `--font-geist-sans/mono`. Designs in
-  Claude Design render in system sans, not Geist. If true Geist fidelity is wanted,
-  add `@font-face` woff2s and wire them (this was a deliberate, recorded choice).
-- **Adding a component**: add its `.tsx` under `src/components/ui`, re-run tsc emit
-  + Tailwind compile + build; if it's a Radix re-export it'll likely need a
-  `cfg.dtsPropsFor` entry, and if it exports sub-parts add them to `componentSrcMap`
-  nulls.
+- **Brand font (Geist) IS shipped.** woff2 weights (Sans 400/500/600/700, Mono
+  400/500) are vendored from the `geist` npm package into `.design-sync/fonts/`
+  (committed), wired via `cfg.extraFonts` → `.design-sync/fonts/geist.css`. The
+  converter copies them into the bundle's `fonts/` and `@import`s `fonts/fonts.css`
+  from `styles.css`. `--font-geist-sans/mono` (in `ds-theme.css`) name "Geist" /
+  "Geist Mono" first with a system fallback. If you add a new font weight to a
+  component, vendor that woff2 and add an `@font-face` to `geist.css`.
+- **Adding a component**: add its `.tsx` under `src/components/ui`, then re-run
+  the tsc emit, the Tailwind compile, and the build. If it's a Radix re-export it
+  will likely need a `cfg.dtsPropsFor` entry, and if it exports sub-parts add them
+  to the `componentSrcMap` nulls.
