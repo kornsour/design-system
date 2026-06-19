@@ -4,7 +4,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "typescript-template";
+} from "design-system";
 
 export const Default = () => (
 	<TooltipProvider>

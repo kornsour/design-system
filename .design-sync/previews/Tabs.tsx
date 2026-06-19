@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "typescript-template";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "design-system";
 
 const body: React.CSSProperties = { fontSize: 14, color: "var(--muted-foreground)", paddingTop: 4 };
 

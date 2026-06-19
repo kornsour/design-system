@@ -1,13 +1,13 @@
 {
-	"pkg": "typescript-template",
+	"pkg": "design-system",
 	"globalName": "ModernNeutral",
 	"shape": "package",
 	"projectId": "bfeff1a8-30b8-472e-a5a0-bb772e979018",
-	"tsconfig": "./tsconfig.json",
+	"buildCmd": "pnpm build",
 	"srcDir": "src/components/ui",
-	"cssEntry": "ds-compiled.css",
-	"extraFonts": "../../.design-sync/fonts/geist.css",
+	"cssEntry": "dist/styles.css",
 	"readmeHeader": ".design-sync/conventions.md",
+	"guidelinesGlob": "docs/guides/**/*.md",
 	"overrides": {
 		"Dialog": { "cardMode": "single", "viewport": "700x420" },
 		"Tooltip": { "cardMode": "single", "viewport": "360x220" },

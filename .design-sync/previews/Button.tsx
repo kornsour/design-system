@@ -1,4 +1,4 @@
-import { Button } from "typescript-template";
+import { Button } from "design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" };
 

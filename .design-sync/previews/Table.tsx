@@ -6,7 +6,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "typescript-template";
+} from "design-system";
 
 export const Default = () => (
 	<Table>

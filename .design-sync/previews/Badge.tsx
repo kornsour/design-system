@@ -1,4 +1,4 @@
-import { Badge } from "typescript-template";
+import { Badge } from "design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" };
 

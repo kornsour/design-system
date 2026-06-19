@@ -7,7 +7,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "typescript-template";
+} from "design-system";
 
 export const Confirmation = () => (
 	<Dialog defaultOpen>

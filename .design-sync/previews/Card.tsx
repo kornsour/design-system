@@ -6,7 +6,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "typescript-template";
+} from "design-system";
 
 export const Default = () => (
 	<Card style={{ maxWidth: 360 }}>

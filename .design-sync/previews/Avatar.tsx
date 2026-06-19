@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "typescript-template";
+import { Avatar, AvatarFallback } from "design-system";
 
 const row: React.CSSProperties = { display: "flex", gap: 8, alignItems: "center" };
 

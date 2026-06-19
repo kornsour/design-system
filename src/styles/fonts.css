@@ -1,48 +1,46 @@
 /* Geist + Geist Mono @font-face — the design system's brand fonts.
- * woff2 files vendored from the `geist` npm package and committed alongside.
- * The converter (cfg.extraFonts) copies these into the bundle's fonts/ and
- * @imports this from styles.css, so designs render in real Geist. */
+ * woff2 vendored from the `geist` npm package (see src/styles/fonts/).
+ * url()s are relative to the built dist/styles.css (fonts copied to dist/fonts/). */
 
 @font-face {
 	font-family: "Geist";
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("./Geist-Regular.woff2") format("woff2");
+	src: url("./fonts/Geist-Regular.woff2") format("woff2");
 }
 @font-face {
 	font-family: "Geist";
 	font-style: normal;
 	font-weight: 500;
 	font-display: swap;
-	src: url("./Geist-Medium.woff2") format("woff2");
+	src: url("./fonts/Geist-Medium.woff2") format("woff2");
 }
 @font-face {
 	font-family: "Geist";
 	font-style: normal;
 	font-weight: 600;
 	font-display: swap;
-	src: url("./Geist-SemiBold.woff2") format("woff2");
+	src: url("./fonts/Geist-SemiBold.woff2") format("woff2");
 }
 @font-face {
 	font-family: "Geist";
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url("./Geist-Bold.woff2") format("woff2");
+	src: url("./fonts/Geist-Bold.woff2") format("woff2");
 }
-
 @font-face {
 	font-family: "Geist Mono";
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("./GeistMono-Regular.woff2") format("woff2");
+	src: url("./fonts/GeistMono-Regular.woff2") format("woff2");
 }
 @font-face {
 	font-family: "Geist Mono";
 	font-style: normal;
 	font-weight: 500;
 	font-display: swap;
-	src: url("./GeistMono-Medium.woff2") format("woff2");
+	src: url("./fonts/GeistMono-Medium.woff2") format("woff2");
 }

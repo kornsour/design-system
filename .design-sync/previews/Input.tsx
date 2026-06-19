@@ -1,4 +1,4 @@
-import { Input, Label } from "typescript-template";
+import { Input, Label } from "design-system";
 
 const field: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 6, maxWidth: 320 };
 const col: React.CSSProperties = { display: "flex", flexDirection: "column", gap: 12, maxWidth: 320 };

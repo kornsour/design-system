@@ -1,75 +1,61 @@
 # design-sync notes — Modern Neutral
 
-This repo is a **Next.js app**, not a published component library, so the sync
-runs the package shape in **synth-entry mode** (no `dist/`). A few repo-specific
-things make that work — keep them in mind on re-sync.
+This repo builds an installable package (`design-system`, ADR-0011). `/design-sync`
+runs the **package shape against the real `dist/`** — no synth-entry hacks.
 
-## Build setup (must exist before running the converter)
+## Re-sync flow (one path)
 
-The converter resolves the package from `node_modules/<pkg>`, which npm/pnpm
-won't self-install for the repo's own package. We fake a **clean, non-recursive
-package root** so `PKG_DIR` points at real source without a self-referential
-`node_modules` (a symlink-to-repo-root makes ts-morph loop forever through
-`node_modules/typescript-template/node_modules/…`). Recreate it on a fresh clone:
+1. `pnpm install` (fresh clone) — pnpm, frozen lockfile.
+2. `pnpm build` — produces `dist/` (this is `cfg.buildCmd`; the converter reads it).
+3. Re-copy the staged scripts and run the driver pointing at the dist entry.
+   First-ever sync omits `--remote`. `--entry ./dist/index.mjs` makes the
+   converter resolve the package from the repo root and read `dist/*.d.ts`:
 
 ```sh
-mkdir -p node_modules/typescript-template
-ln -sfn ../../src            node_modules/typescript-template/src
-ln -sfn ../../tsconfig.json  node_modules/typescript-template/tsconfig.json
-ln -sfn ../../package.json   node_modules/typescript-template/package.json
+node .ds-sync/resync.mjs --config .design-sync/config.json \
+  --node-modules ./node_modules --entry ./dist/index.mjs \
+  --out ./ds-bundle --remote .design-sync/.cache/remote-sync.json
 ```
 
-- **Real `.d.ts` come from a focused tsc emit** (synth mode alone gives empty
-  `{ [key: string]: unknown }` contracts). Run before the converter:
-  `npx tsc -p tsconfig.dts.json` → emits to `node_modules/typescript-template/dist-types/`,
-  which the converter's `.d.ts` glob then reads. Radix `.Root` re-exports and the
-  plain `div`/`table` wrappers still don't extract — their props are hand-written
-  in `cfg.dtsPropsFor` (Avatar, Card, Table, Label, Checkbox, Switch, Dialog,
-  Tooltip, Tabs, Select). Update those if those components' APIs change.
-- **CSS must be pre-compiled** — `cfg.cssEntry` is copied verbatim, the converter
-  does NOT run Tailwind, and `src/app/globals.css` is raw Tailwind v4 source. Build
-  the shipped stylesheet into the package root (a real file, so it passes the
-  cssEntry containment check):
-  `npx @tailwindcss/cli@4 -i .design-sync/ds-theme.css -o node_modules/typescript-template/ds-compiled.css`
-  `ds-theme.css` imports `globals.css` and force-generates the full semantic-token
-  utility set via `@source inline(...)` so the design agent can use the whole
-  `bg-primary / text-muted-foreground / border-input / …` vocabulary, not just the
-  subset the components happened to use. It also defines `--font-geist-sans/mono`
-  fallbacks (see below). This is design-sync-only; the app's own CSS is unaffected.
+## Config notes (`.design-sync/config.json`)
 
-## Component scoping
+- `pkg: "design-system"`, `globalName: "ModernNeutral"`, `cssEntry: "dist/styles.css"`,
+  `buildCmd: "pnpm build"`.
+- `dtsPropsFor` hand-writes props for the 10 components whose types don't flatten
+  through extraction — the Radix `.Root` re-exports (Dialog/Select/Tabs/Tooltip/
+  Checkbox/Switch/Label/Avatar) and the `ComponentProps<"div"|"table">` wrappers
+  (Card/Table). Update these if those components' APIs change.
+- `componentSrcMap` nulls the ~35 compound sub-parts (CardHeader, DialogContent, …)
+  so the pane shows 15 clean cards. They stay importable — `dist/index.mjs` exports
+  all 53 symbols — and are composed inside their parent's preview.
+- Overrides: `Dialog`/`Tooltip` = `cardMode: single` + viewport (open overlays);
+  `Table` = `cardMode: column`. Dialog viewport is 700px wide on purpose (below
+  640px its footer stacks).
+- `guidelinesGlob` is pinned to `docs/guides/**/*.md` so the default `docs/*.md`
+  doesn't sweep in the ADR index.
 
-- `cfg.srcDir` = `src/components/ui` so app/page exports don't get picked up.
-- `cfg.componentSrcMap` nulls the ~35 compound sub-parts (CardHeader, DialogContent,
-  …) so the DS pane shows 15 clean cards. They remain importable — the bundle
-  exports all 53 symbols — and are composed inside their parent's preview.
+## Fonts
 
-## Overrides
-
-- `Dialog` / `Tooltip`: `cardMode: single` + viewport (open overlays render in-card).
-- `Table`: `cardMode: column` (full-width).
-- Dialog viewport is 700px wide on purpose — below 640px the footer stacks
-  (its `sm:` breakpoint), which looks wrong in a card.
+Geist ships **with the package**: woff2 in `src/styles/fonts/`, `@font-face` in
+`src/styles/fonts.css`, both pulled into `dist/styles.css` by the build. design-sync
+gets them automatically via `cssEntry` (the converter copies the `@font-face`
+`url()` targets into the bundle's `fonts/`). No `cfg.extraFonts` needed.
 
 ## Known render warns
 
-None outstanding. Final validate: 15/15 render clean, 119 tokens defined / 0
-missing, bundle complete with no warnings.
+None outstanding. Last validate: 15/15 render clean, 119 tokens defined / 0 missing,
+bundle complete, no warnings.
 
 ## Re-sync risks (watch list)
 
-- **`ds-compiled.css` and `dist-types/` live in `node_modules`** (gitignored) and
-  are regenerated, not committed. A re-sync MUST re-run the tsc emit and the
-  Tailwind compile (commands above) before `package-build.mjs`, or it falls back
-  to empty contracts / unstyled CSS.
-- **Brand font (Geist) IS shipped.** woff2 weights (Sans 400/500/600/700, Mono
-  400/500) are vendored from the `geist` npm package into `.design-sync/fonts/`
-  (committed), wired via `cfg.extraFonts` → `.design-sync/fonts/geist.css`. The
-  converter copies them into the bundle's `fonts/` and `@import`s `fonts/fonts.css`
-  from `styles.css`. `--font-geist-sans/mono` (in `ds-theme.css`) name "Geist" /
-  "Geist Mono" first with a system fallback. If you add a new font weight to a
-  component, vendor that woff2 and add an `@font-face` to `geist.css`.
-- **Adding a component**: add its `.tsx` under `src/components/ui`, then re-run
-  the tsc emit, the Tailwind compile, and the build. If it's a Radix re-export it
-  will likely need a `cfg.dtsPropsFor` entry, and if it exports sub-parts add them
-  to the `componentSrcMap` nulls.
+- **`dist/` is gitignored and regenerated** — always `pnpm build` before the
+  converter, or it reads a stale/missing entry. `cfg.buildCmd` handles this on a
+  driver run.
+- **`dtsPropsFor` can drift** from the real component APIs (it's hand-written).
+  If you change a Radix-wrapped component's props, update its entry.
+- **All components ship `"use client"`** (prepended in `scripts/postbuild.mjs`).
+  If a future tsup upgrade preserves per-file directives, revisit.
+- **Adding a component**: add `.tsx` + export from the barrel, `pnpm build`, then
+  re-sync. New Radix re-export → likely needs a `dtsPropsFor` entry; new sub-parts
+  → add to `componentSrcMap` nulls; new font weight → vendor the woff2 + add an
+  `@font-face` to `src/styles/fonts.css`.
