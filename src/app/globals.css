@@ -1,4 +1,4 @@
 /* Showcase app stylesheet. The design system's styling lives in src/styles/
  * (base + per-feel themes); this just activates the default theme. Swap the
- * import to preview another feel, e.g. "../styles/themes/soundkata.css". */
+ * import to preview another feel, e.g. "../styles/themes/cobalt.css". */
 @import "../styles/themes/modern-neutral.css";

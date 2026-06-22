@@ -11,7 +11,7 @@ One component library, one token set per feel, one Claude Design project per fee
 | Feel | Config | projectId | global | cssEntry |
 |------|--------|-----------|--------|----------|
 | Modern Neutral (default) | `.design-sync/config.json` | `bfeff1a8-30b8-472e-a5a0-bb772e979018` | `ModernNeutral` | `dist/themes/modern-neutral.css` |
-| soundkata | `.design-sync/soundkata.json` | `3c11b328-fcbd-4b5a-8874-a514f0ca785a` | `Soundkata` | `dist/themes/soundkata.css` |
+| cobalt (soundkata project) | `.design-sync/soundkata.json` | `3c11b328-fcbd-4b5a-8874-a514f0ca785a` | `Soundkata` | `dist/themes/cobalt.css` |
 
 Everything else (pkg, dtsPropsFor, componentSrcMap, overrides, previews) is shared
 across feels — the configs differ only in projectId/global/cssEntry/readmeHeader.

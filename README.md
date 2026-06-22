@@ -38,7 +38,7 @@ The same components ship in multiple "feels" — pick one by importing its style
 | Feel | Import | Look |
 |------|--------|------|
 | Modern Neutral | `@kornorg/design-system/themes/modern-neutral.css` | Zinc neutrals, indigo accent, 8px radius |
-| soundkata | `@kornorg/design-system/themes/soundkata.css` | Dark-first studio feel, electric azure, 6px radius |
+| Cobalt | `@kornorg/design-system/themes/cobalt.css` | Dark-first studio look, electric cobalt-blue accent, 6px radius |
 
 `@kornorg/design-system/styles.css` re-exports Modern Neutral as the default. Each
 feel also has its own Claude Design project (see `.design-sync/`).

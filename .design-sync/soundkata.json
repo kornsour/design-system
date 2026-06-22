@@ -5,7 +5,7 @@
 	"projectId": "3c11b328-fcbd-4b5a-8874-a514f0ca785a",
 	"buildCmd": "pnpm build",
 	"srcDir": "src/components/ui",
-	"cssEntry": "dist/themes/soundkata.css",
+	"cssEntry": "dist/themes/cobalt.css",
 	"readmeHeader": ".design-sync/conventions.soundkata.md",
 	"guidelinesGlob": "docs/guides/**/*.md",
 	"overrides": {

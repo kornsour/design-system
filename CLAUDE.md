@@ -16,7 +16,7 @@ shadows, light + dark mode.
 - **Components are theme-agnostic** — they use only semantic token utilities (`bg-primary`, `border-input`, …), never hard-coded colors. A new "feel" is a new token set, NOT new components.
 - **Tokens** are organized for multiple feels:
   - `src/styles/base.css` — feel-agnostic: Tailwind import, `@theme inline` token→utility mappings, `@source inline` utility vocabulary, base styles. Defines NO token values.
-  - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `soundkata.css`.
+  - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `cobalt.css`.
   - `src/tokens.ts` — the Modern Neutral values as a typed export, for code that needs token values directly (charts, canvas, email).
 - **Components** live in `src/components/ui/`, one file per component, re-exported from `src/components/ui/index.ts`. Within the repo, import via `@/components/ui`; consumers import from `design-system`.
   - Variants use `class-variance-authority` (cva); class merging uses `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
@@ -28,7 +28,7 @@ shadows, light + dark mode.
 ### Multiple feels (themes)
 One component library, several token sets. Each feel:
 - has a stylesheet `src/styles/themes/<feel>.css` → built to `dist/themes/<feel>.css` (self-contained: utilities + tokens + fonts) and exported as `@kornorg/design-system/themes/<feel>.css`;
-- has its own **Claude Design project** and a `.design-sync/<feel>.json` config (own `projectId`, `globalName`, `cssEntry`, conventions header). `config.json` is Modern Neutral (the default); `soundkata.json` is the soundkata feel.
+- has its own **Claude Design project** and a `.design-sync/<feel>.json` config (own `projectId`, `globalName`, `cssEntry`, conventions header). `config.json` is Modern Neutral (the default); `soundkata.json` is the soundkata site's project, which uses the `cobalt` theme. (Theme names describe a look and are reusable; a project/site picks one.)
 
 To add a feel: copy a theme file, change the token values, `pnpm build` (it's picked up automatically), then create a Claude Design project + a `.design-sync/<feel>.json` and sync. See `.design-sync/NOTES.md`.
 
@@ -81,7 +81,7 @@ src/
 │   ├── base.css         # feel-agnostic: @theme mappings + @source inline + base styles
 │   ├── fonts.css        # Geist @font-face
 │   ├── fonts/           # vendored Geist woff2
-│   └── themes/          # one token set per feel (modern-neutral.css, soundkata.css)
+│   └── themes/          # one token set per feel (modern-neutral.css, cobalt.css)
 ├── lib/utils.ts         # cn()
 ├── tokens.ts            # typed token values (Modern Neutral)
 └── __tests__/           # unit tests
