@@ -11,7 +11,7 @@ One component library, one token set per feel, one Claude Design project per fee
 | Feel | Config | projectId | global | cssEntry |
 |------|--------|-----------|--------|----------|
 | Modern Neutral (default) | `.design-sync/config.json` | `bfeff1a8-30b8-472e-a5a0-bb772e979018` | `ModernNeutral` | `dist/themes/modern-neutral.css` |
-| cobalt (soundkata project) | `.design-sync/soundkata.json` | `3c11b328-fcbd-4b5a-8874-a514f0ca785a` | `Soundkata` | `dist/themes/cobalt.css` |
+| cobalt | `.design-sync/cobalt.json` | `ddc8cdc1-a922-4b59-a027-9c6bdce3db2f` | `Cobalt` | `dist/themes/cobalt.css` |
 
 Everything else (pkg, dtsPropsFor, componentSrcMap, overrides, previews) is shared
 across feels — the configs differ only in projectId/global/cssEntry/readmeHeader.
@@ -29,10 +29,10 @@ across feels — the configs differ only in projectId/global/cssEntry/readmeHead
 node .ds-sync/resync.mjs --config .design-sync/config.json \
   --node-modules ./node_modules --entry ./dist/index.mjs \
   --out ./ds-bundle --remote .design-sync/.cache/remote-modern-neutral.json
-# soundkata
-node .ds-sync/resync.mjs --config .design-sync/soundkata.json \
+# cobalt
+node .ds-sync/resync.mjs --config .design-sync/cobalt.json \
   --node-modules ./node_modules --entry ./dist/index.mjs \
-  --out ./ds-bundle-soundkata --remote .design-sync/.cache/remote-soundkata.json
+  --out ./ds-bundle-cobalt --remote .design-sync/.cache/remote-cobalt.json
 ```
 
 `--entry ./dist/index.mjs` makes the converter resolve the package from the repo

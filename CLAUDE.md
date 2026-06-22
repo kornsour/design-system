@@ -28,7 +28,7 @@ shadows, light + dark mode.
 ### Multiple feels (themes)
 One component library, several token sets. Each feel:
 - has a stylesheet `src/styles/themes/<feel>.css` → built to `dist/themes/<feel>.css` (self-contained: utilities + tokens + fonts) and exported as `@kornorg/design-system/themes/<feel>.css`;
-- has its own **Claude Design project** and a `.design-sync/<feel>.json` config (own `projectId`, `globalName`, `cssEntry`, conventions header). `config.json` is Modern Neutral (the default); `soundkata.json` is the soundkata site's project, which uses the `cobalt` theme. (Theme names describe a look and are reusable; a project/site picks one.)
+- has its own **Claude Design project** and a `.design-sync/<feel>.json` config (own `projectId`, `globalName`, `cssEntry`, conventions header). `config.json` is Modern Neutral (the default); `cobalt.json` is the `cobalt` theme's project. (Theme names describe a look and are reusable; a project/site picks one.)
 
 To add a feel: copy a theme file, change the token values, `pnpm build` (it's picked up automatically), then create a Claude Design project + a `.design-sync/<feel>.json` and sync. See `.design-sync/NOTES.md`.
 
@@ -89,7 +89,7 @@ scripts/
 ├── postbuild.mjs        # rename .d.mts→.d.ts, prepend "use client"
 └── build-css.mjs        # compile every theme → dist/themes/<feel>.css
 .design-sync/            # /design-sync inputs: config.json (modern-neutral),
-                         #   soundkata.json, previews/, conventions*.md, NOTES
+                         #   cobalt.json, previews/, conventions*.md, NOTES
 dist/                    # build output (gitignored): index.mjs/.d.ts, tokens, themes/
 e2e/                     # Playwright tests
 ```

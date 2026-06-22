@@ -1,11 +1,10 @@
-# soundkata — design system conventions
+# cobalt — design system conventions
 
-A React + Tailwind CSS v4 component library for **soundkata**, an electronic-
-music-production learning platform. The feel is **studio / dark-first**: deep
-blue-black surfaces, an electric azure accent, vivid teal for success, tight 6px
-radius — designed to look at home next to a DAW while staying readable for
-lessons. Same components and class vocabulary as the base system; only the tokens
-differ.
+A React + Tailwind CSS v4 component library wearing the **cobalt** feel: a
+**studio / dark-first** look — deep blue-black surfaces, an electric cobalt-blue
+accent, vivid teal for success, tight 6px radius. Built to feel at home in a
+focused, low-light product UI while staying crisp and readable. Same components
+and class vocabulary as the base system; only the tokens differ.
 
 ## Setup & wrapping
 
@@ -23,7 +22,7 @@ differ.
 
 Styled with **Tailwind utility classes bound to semantic design tokens**, never raw
 palette colors. Prefer `bg-primary` over `bg-blue-500` — semantic classes adapt to
-light/dark and carry the soundkata feel. Full vocabulary in `styles.css` (each also
+light/dark and carry the cobalt feel. Full vocabulary in `styles.css` (each also
 `hover:` / `focus-visible:`):
 
 | Purpose | Background | Text | Border / ring |
@@ -64,18 +63,18 @@ Importable sub-parts: `Card` → `CardHeader`/`CardTitle`/`CardDescription`/
 
 ```tsx
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from "@kornorg/design-system";
-import "@kornorg/design-system/themes/soundkata.css";
+import "@kornorg/design-system/themes/cobalt.css";
 
-function LessonCard() {
+function TrackCard() {
 	return (
 		<Card className="max-w-sm">
 			<CardHeader>
 				<CardTitle>Sidechain compression</CardTitle>
-				<CardDescription>Module 3 · 12 min</CardDescription>
+				<CardDescription>Preset · cobalt</CardDescription>
 			</CardHeader>
 			<CardContent className="flex items-center gap-2 text-sm text-muted-foreground">
-				<Badge variant="success">Completed</Badge>
-				Next: ducking the bass
+				<Badge variant="success">Active</Badge>
+				Ducking the bass
 			</CardContent>
 		</Card>
 	);

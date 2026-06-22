@@ -1,7 +1,7 @@
 /* cobalt — a dark-first "studio" look: deep blue-black neutrals, an electric
  * cobalt-blue accent, vivid teal success, tighter 6px radius. Designed to shine
  * in dark mode (add class="dark"); a clean cool-light variant is provided too.
- * (Used by the soundkata project, but the look is reusable by any app/site.) */
+ * (Used by the cobalt project, but the look is reusable by any app/site.) */
 @import "../base.css";
 @import "../fonts.css";
 
