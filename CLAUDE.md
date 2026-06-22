@@ -13,15 +13,24 @@ product. There is no database, server-action, or env layer (see ADR-0011).
 "Modern Neutral" — zinc neutrals with an indigo accent, 8px base radius, soft
 shadows, light + dark mode.
 
-- **Tokens** live in two places that must stay in sync:
-  - `src/app/globals.css` — semantic CSS custom properties (`--background`, `--primary`, `--radius`, shadows, …) for light (`:root`) and dark (`.dark`) modes, exposed to Tailwind utilities (`bg-primary`, `text-muted-foreground`, `rounded-lg`, …) via `@theme inline`.
-  - `src/tokens.ts` — the same values as a typed export, for code that needs token values directly (charts, canvas, email).
+- **Components are theme-agnostic** — they use only semantic token utilities (`bg-primary`, `border-input`, …), never hard-coded colors. A new "feel" is a new token set, NOT new components.
+- **Tokens** are organized for multiple feels:
+  - `src/styles/base.css` — feel-agnostic: Tailwind import, `@theme inline` token→utility mappings, `@source inline` utility vocabulary, base styles. Defines NO token values.
+  - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `cobalt.css`.
+  - `src/tokens.ts` — the Modern Neutral values as a typed export, for code that needs token values directly (charts, canvas, email).
 - **Components** live in `src/components/ui/`, one file per component, re-exported from `src/components/ui/index.ts`. Within the repo, import via `@/components/ui`; consumers import from `design-system`.
   - Variants use `class-variance-authority` (cva); class merging uses `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
   - Interactive components (Dialog, Select, Checkbox, Switch, Tabs, Tooltip, Label, Avatar) wrap **Radix UI** primitives (the unified `radix-ui` package) and carry `"use client"`. Icons are from `lucide-react`. Enter/exit animations from `tw-animate-css`.
   - Components consume **semantic token utilities only** (`bg-primary`, `border-input`, …) — never hard-coded colors like `bg-indigo-600`. This is what lets the whole system re-skin by editing tokens.
 - **Dark mode** is class-based: the `dark` variant is defined in `globals.css` and toggled by adding the `dark` class to a root element (see `src/components/theme-toggle.tsx`).
-- **Showcase**: `/design-system` (`src/app/design-system/page.tsx`) renders every component for visual review (`pnpm dev`).
+- **Showcase**: `/design-system` (`src/app/design-system/page.tsx`) renders every component for visual review (`pnpm dev`). It uses the default theme via `src/app/globals.css` (which just `@import`s `themes/modern-neutral.css` — swap that import to preview another feel).
+
+### Multiple feels (themes)
+One component library, several token sets. Each feel:
+- has a stylesheet `src/styles/themes/<feel>.css` → built to `dist/themes/<feel>.css` (self-contained: utilities + tokens + fonts) and exported as `@kornorg/design-system/themes/<feel>.css`;
+- has its own **Claude Design project** and a `.design-sync/<feel>.json` config (own `projectId`, `globalName`, `cssEntry`, conventions header). `config.json` is Modern Neutral (the default); `cobalt.json` is the `cobalt` theme's project. (Theme names describe a look and are reusable; a project/site picks one.)
+
+To add a feel: copy a theme file, change the token values, `pnpm build` (it's picked up automatically), then create a Claude Design project + a `.design-sync/<feel>.json` and sync. See `.design-sync/NOTES.md`.
 
 ### Conventions when adding a component
 1. Create `src/components/ui/<name>.tsx`; use `cn()` and cva for variants; semantic tokens only.
@@ -37,10 +46,11 @@ Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `src/styles/packa
 
 - `dist/index.mjs` + `dist/index.d.ts` — components. react/react-dom are peers; radix-ui/lucide/cva/clsx/tailwind-merge are externalized. `"use client"` is prepended post-build (esbuild strips a bundled banner).
 - `dist/tokens.mjs` + `.d.ts` — typed tokens.
-- `dist/styles.css` + `dist/fonts/` — Tailwind compiled from `src/styles/package.css`: token layer + full semantic-token utility vocabulary (`@source inline`) + Geist `@font-face` (woff2 vendored in `src/styles/fonts/`). Self-contained; consumers need no Tailwind setup.
+- `dist/themes/<feel>.css` (+ `dist/themes/fonts/`) — one Tailwind-compiled stylesheet per feel: utilities + that feel's tokens + Geist `@font-face`. Self-contained; consumers need no Tailwind setup. `dist/styles.css` re-exports the default feel. Built by `scripts/build-css.mjs` (auto-discovers `src/styles/themes/*`).
 
-`package.json` `exports` expose `.`, `./tokens`, `./styles.css`. The package is
-`private: true` (flip to publish). `dist/` is gitignored; `prepack` rebuilds it.
+`package.json` `exports` expose `.`, `./tokens`, `./styles.css`, and `./themes/*`
+(wildcard — new themes need no exports change). Published as `@kornorg/design-system`
+(`prepack` builds `dist/`, which is gitignored).
 
 ## Decisions & Docs
 
@@ -63,20 +73,24 @@ supersedes 0005/0006/0007). Runbooks are in `docs/maintenance/`.
 ```
 src/
 ├── app/                 # Next.js showcase app (layout, /design-system page)
-│   └── globals.css      # token layer (light/dark) + @theme — styling source of truth
+│   └── globals.css      # showcase stylesheet — just @imports the default theme
 ├── components/
 │   ├── ui/              # the component library (one file each) + index.ts barrel
 │   └── theme-toggle.tsx # showcase-only dark-mode toggle
-├── styles/              # package build inputs
-│   ├── package.css      # tsup CSS entry: globals + @source inline + fonts
+├── styles/
+│   ├── base.css         # feel-agnostic: @theme mappings + @source inline + base styles
 │   ├── fonts.css        # Geist @font-face
-│   └── fonts/           # vendored Geist woff2
+│   ├── fonts/           # vendored Geist woff2
+│   └── themes/          # one token set per feel (modern-neutral.css, cobalt.css)
 ├── lib/utils.ts         # cn()
-├── tokens.ts            # typed token values
+├── tokens.ts            # typed token values (Modern Neutral)
 └── __tests__/           # unit tests
-scripts/postbuild.mjs    # rename .d.mts→.d.ts, prepend "use client"
-.design-sync/            # /design-sync inputs (config, previews, conventions, NOTES)
-dist/                    # build output (gitignored)
+scripts/
+├── postbuild.mjs        # rename .d.mts→.d.ts, prepend "use client"
+└── build-css.mjs        # compile every theme → dist/themes/<feel>.css
+.design-sync/            # /design-sync inputs: config.json (modern-neutral),
+                         #   cobalt.json, previews/, conventions*.md, NOTES
+dist/                    # build output (gitignored): index.mjs/.d.ts, tokens, themes/
 e2e/                     # Playwright tests
 ```
 

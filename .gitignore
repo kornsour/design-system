@@ -56,3 +56,4 @@ tsconfig.dts.json
 
 # package build output
 dist/
+ds-bundle-*/
