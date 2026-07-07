@@ -37,6 +37,28 @@ export const colors = {
 	ring: "var(--ring)",
 } as const;
 
+/**
+ * "Spartan" theme palette — Michigan State green, anchored on the official
+ * #18453B at the 700 shade. Activated in the DOM via the `theme-spartan` class
+ * (see globals.css), which remaps the semantic `--primary`/`--ring` tokens.
+ * These raw values are for code that can't read CSS variables (charts, canvas,
+ * email). The semantic `colors` export above already resolves to the active
+ * theme, so prefer it for anything rendered in the DOM.
+ */
+export const spartan = {
+	50: "#eef6f2",
+	100: "#d6ebe3",
+	200: "#aed7c9",
+	300: "#78bca5",
+	400: "#4aa084",
+	500: "#2f8067",
+	600: "#1a5c49",
+	700: "#18453b",
+	800: "#143a32",
+	900: "#0f2e28",
+	950: "#081b17",
+} as const;
+
 /** Border-radius scale. Base radius is 0.5rem (8px). */
 export const radii = {
 	sm: "var(--radius-sm)", // 4px
@@ -100,6 +122,7 @@ export const fontFamily = {
 
 export const tokens = {
 	colors,
+	spartan,
 	radii,
 	shadows,
 	spacing,

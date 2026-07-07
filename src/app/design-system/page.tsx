@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Mail, Settings } from "lucide-react";
+import { PaletteToggle } from "@/components/palette-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	Alert,
@@ -70,7 +71,10 @@ export default function DesignSystemPage() {
 						<h1 className="text-3xl font-semibold tracking-tight">Design System</h1>
 						<p className="text-muted-foreground">Modern Neutral — tokens & components</p>
 					</div>
-					<ThemeToggle />
+					<div className="flex items-center gap-2">
+						<PaletteToggle />
+						<ThemeToggle />
+					</div>
 				</header>
 
 				<Section title="Buttons">

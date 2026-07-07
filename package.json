@@ -1,15 +1,56 @@
 {
-  "name": "typescript-template",
-  "version": "0.1.0",
-  "private": true,
-  "packageManager": "pnpm@10.34.4+sha512.h2i+VSAK4/Iia2Un/Momh+FLxOXxLXchoPJdo99HkVF3BYZI20F3uvNIEg+guidS2NjZP2vq8f5krhjajelhrw==",
+  "name": "@kornorg/design-system",
+  "version": "0.2.0",
+  "description": "Modern Neutral — a token-driven React component library (Tailwind CSS v4), with a Spartan (Michigan State green) theme.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.34.3+sha512.f2c531b08829d7be7f03c90addc266615f9c5477463e4bf1d275cb263ce9ea57cf0d5599110d94649a9bb3fed9f0b5efcea74a7016b61532a24cb9ad87860c1d",
   "engines": {
     "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kornsour/design-system.git"
+  },
+  "homepage": "https://github.com/kornsour/design-system#readme",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/components/ui/index.js",
+  "types": "./dist/components/ui/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/components/ui/index.d.ts",
+      "import": "./dist/components/ui/index.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./theme-toggle": {
+      "types": "./dist/components/theme-toggle.d.ts",
+      "import": "./dist/components/theme-toggle.js"
+    },
+    "./palette-toggle": {
+      "types": "./dist/components/palette-toggle.d.ts",
+      "import": "./dist/components/palette-toggle.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "build:package": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && cp src/app/globals.css dist/styles.css",
+    "prepublishOnly": "pnpm build:package",
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -50,6 +91,7 @@
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.10",
     "tailwindcss": "^4",
+    "tsc-alias": "^1.9.0",
     "typescript": "^6",
     "vitest": "^4.1.9"
   }

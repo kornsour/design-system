@@ -106,6 +106,30 @@
 	--shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.5), 0 4px 6px -4px oklch(0 0 0 / 0.5);
 }
 
+/* ============================================================================
+ * Theme: "Spartan"
+ *
+ * Swaps the indigo brand accent for Michigan State green, anchored on the
+ * official #18453B at the 700 shade. Opt in by adding the `theme-spartan`
+ * class to <html>; it composes with `.dark`. Only the brand accent and focus
+ * ring change — the zinc neutral base, radius, and shadows are inherited from
+ * Modern Neutral, so the whole system re-skins by overriding two tokens.
+ *
+ * Values are the exact brand ramp (hex) to preserve the Spartan green.
+ * Ramp: 600 #1a5c49 · 500 #2f8067 · 700 #18453b.
+ * ========================================================================== */
+.theme-spartan {
+	--primary: #1a5c49; /* spartan-600 */
+	--primary-foreground: oklch(0.985 0 0); /* near-white */
+	--ring: #1a5c49;
+}
+
+.theme-spartan.dark {
+	--primary: #2f8067; /* spartan-500, brighter on dark surfaces */
+	--primary-foreground: oklch(0.985 0 0);
+	--ring: #2f8067;
+}
+
 /* Expose tokens to Tailwind utilities (bg-*, text-*, border-*, rounded-*, …) */
 @theme inline {
 	--color-background: var(--background);

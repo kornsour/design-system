@@ -1,0 +1,23 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": false,
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"incremental": false,
+		"plugins": []
+	},
+	"include": [
+		"src/components/ui/**/*",
+		"src/components/theme-toggle.tsx",
+		"src/components/palette-toggle.tsx",
+		"src/lib/utils.ts",
+		"src/tokens.ts"
+	],
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}
