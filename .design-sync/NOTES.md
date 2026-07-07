@@ -12,6 +12,7 @@ One component library, one token set per feel, one Claude Design project per fee
 |------|--------|-----------|--------|----------|
 | Modern Neutral (default) | `.design-sync/config.json` | `bfeff1a8-30b8-472e-a5a0-bb772e979018` | `ModernNeutral` | `dist/themes/modern-neutral.css` |
 | cobalt | `.design-sync/cobalt.json` | `ddc8cdc1-a922-4b59-a027-9c6bdce3db2f` | `Cobalt` | `dist/themes/cobalt.css` |
+| spartan | `.design-sync/spartan.json` | `9717fc63-74e8-4290-b8e0-4e4b12ecf7cc` | `Spartan` | `dist/themes/spartan.css` |
 
 Everything else (pkg, dtsPropsFor, componentSrcMap, overrides, previews) is shared
 across feels — the configs differ only in projectId/global/cssEntry/readmeHeader.
@@ -33,6 +34,10 @@ node .ds-sync/resync.mjs --config .design-sync/config.json \
 node .ds-sync/resync.mjs --config .design-sync/cobalt.json \
   --node-modules ./node_modules --entry ./dist/index.mjs \
   --out ./ds-bundle-cobalt --remote .design-sync/.cache/remote-cobalt.json
+# spartan
+node .ds-sync/resync.mjs --config .design-sync/spartan.json \
+  --node-modules ./node_modules --entry ./dist/index.mjs \
+  --out ./ds-bundle-spartan --remote .design-sync/.cache/remote-spartan.json
 ```
 
 `--entry ./dist/index.mjs` makes the converter resolve the package from the repo
@@ -71,6 +76,12 @@ design-sync picks fonts up automatically via `cssEntry` (no `cfg.extraFonts`).
 - **Grades cache is shared** across feels (`.design-sync/.cache/review/`); since the
   previews are identical and render good in every feel, a `good` grade is valid for
   all. Each project's uploaded `_ds_sync.json` is its own durable anchor.
+- **Render-check browser on macOS**: `playwright install chromium` defaults to
+  `~/Library/Caches/ms-playwright`, but the driver's render check looks in
+  `~/.cache/ms-playwright`. Install (and run the driver) with
+  `PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright` so chromium is found —
+  otherwise validate reports `[RENDER_SKIPPED]`. The pinned playwright build must
+  match the cached `chromium-<build>` dir (repo pin was 1.61.1 → build v1228).
 - **`dtsPropsFor` can drift** from the real component APIs (hand-written).
 - **All components ship `"use client"`** (prepended in `scripts/postbuild.mjs`).
 - **Adding a feel**: copy `src/styles/themes/<feel>.css`, change token values,
