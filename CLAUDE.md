@@ -52,6 +52,24 @@ Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `src/styles/packa
 (wildcard — new themes need no exports change). Published as `@kornorg/design-system`
 (`prepack` builds `dist/`, which is gitignored).
 
+### Releasing to npm
+
+Publishing is automated by `.github/workflows/release.yml`: **publishing a GitHub
+Release** runs the workflow, which builds via `prepack` and runs `npm publish`.
+Auth is **npm trusted publishing (OIDC)** — no `NPM_TOKEN` secret — and provenance
+is attached automatically.
+
+- **Bump `version` in `package.json` and commit it before cutting a Release.** The
+  workflow publishes whatever version is committed on the released ref; it does NOT
+  derive the version from the release tag. Cutting a Release without bumping
+  republishes the current version and npm rejects it (409). Use semver: patch for
+  fixes, minor for a new theme/component, major for breaking API changes.
+- Cut the Release from `main` after the version bump is merged. Tag convention is
+  `v<version>` (e.g. `v0.3.0`); the tag is cosmetic — `package.json` is the source
+  of truth for what gets published.
+- One-time setup already done: the npm Trusted Publisher is configured for this repo
+  + `release.yml` (org `kornsour`, repo `design-system`).
+
 ## Decisions & Docs
 
 Rationale for foundational choices lives in ADRs under `docs/adr/`. **Read the
