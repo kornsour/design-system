@@ -13,8 +13,10 @@ name: Release
 #
 # The publish step uses the npm CLI (not pnpm) because npm has first-class OIDC
 # support; pnpm has had OIDC 404 regressions. pnpm still builds the package via
-# the `prepack` script. Under OIDC, npm generates provenance automatically, so
-# no `--provenance` flag or token is needed. Requires npm >= 11.5.1.
+# the `prepack` script. No token is needed under OIDC. Provenance is requested
+# explicitly with --provenance: despite npm's docs claiming it is automatic under
+# trusted publishing, v0.3.0 published without an attestation until the flag was
+# added. Requires npm >= 11.5.1.
 #
 # The published version is whatever is in package.json — bump + commit it before
 # cutting the Release.
@@ -54,6 +56,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # npm publish runs the `prepack` script (pnpm build) and authenticates via
-      # OIDC — no NPM_TOKEN. Provenance is attached automatically.
+      # OIDC — no NPM_TOKEN. --provenance attaches a build attestation.
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --provenance
