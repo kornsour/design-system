@@ -1,0 +1,44 @@
+name: Release
+
+# Publishes @kornorg/design-system to npm when a GitHub Release is published.
+# The published version is whatever is in package.json — bump + commit it before
+# cutting the Release. `pnpm publish` runs the `prepack` script, which builds the
+# components, tokens, and every theme in src/styles/themes/ into dist/.
+#
+# Requires an `NPM_TOKEN` repository secret: an npm automation (or granular)
+# token with publish access to the @kornorg scope.
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Build & publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for npm provenance
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Publish to npm
+        run: pnpm publish --provenance --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
