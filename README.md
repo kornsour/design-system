@@ -1,9 +1,8 @@
-# Modern Neutral — Design System
+# Design System
 
 A React + Tailwind CSS v4 component library, distributed as an installable
 package and kept in sync with [Claude Design](https://claude.ai/design) via
-`/design-sync`. Neutral zinc surfaces, an indigo brand accent, an 8px base
-radius, soft shadows, full light + dark mode.
+`/design-sync`. Supports various themes.
 
 ## Using it in an app
 
