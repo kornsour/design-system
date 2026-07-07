@@ -39,6 +39,7 @@ The same components ship in multiple "feels" — pick one by importing its style
 |------|--------|------|
 | Modern Neutral | `@kornorg/design-system/themes/modern-neutral.css` | Zinc neutrals, indigo accent, 8px radius |
 | Cobalt | `@kornorg/design-system/themes/cobalt.css` | Dark-first studio look, electric cobalt-blue accent, 6px radius |
+| Spartan | `@kornorg/design-system/themes/spartan.css` | Zinc neutrals with a Michigan State green accent (#18453B), 8px radius |
 
 `@kornorg/design-system/styles.css` re-exports Modern Neutral as the default. Each
 feel also has its own Claude Design project (see `.design-sync/`).
