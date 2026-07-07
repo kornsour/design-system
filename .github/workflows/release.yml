@@ -1,12 +1,23 @@
 name: Release
 
-# Publishes @kornorg/design-system to npm when a GitHub Release is published.
-# The published version is whatever is in package.json — bump + commit it before
-# cutting the Release. `pnpm publish` runs the `prepack` script, which builds the
-# components, tokens, and every theme in src/styles/themes/ into dist/.
+# Publishes @kornorg/design-system to npm when a GitHub Release is published,
+# using npm Trusted Publishing (OIDC) — no long-lived NPM_TOKEN to manage.
 #
-# Requires an `NPM_TOKEN` repository secret: an npm automation (or granular)
-# token with publish access to the @kornorg scope.
+# One-time setup on npmjs.com (package → Settings → Publishing access →
+# Trusted Publisher), for @kornorg/design-system:
+#   Publisher:         GitHub Actions
+#   Organization/user: kornsour
+#   Repository:        design-system
+#   Workflow filename: release.yml   (filename only, not a path)
+#   Environment:       (leave blank)
+#
+# The publish step uses the npm CLI (not pnpm) because npm has first-class OIDC
+# support; pnpm has had OIDC 404 regressions. pnpm still builds the package via
+# the `prepack` script. Under OIDC, npm generates provenance automatically, so
+# no `--provenance` flag or token is needed. Requires npm >= 11.5.1.
+#
+# The published version is whatever is in package.json — bump + commit it before
+# cutting the Release.
 on:
   release:
     types: [published]
@@ -21,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # required for npm provenance
+      id-token: write # required for npm trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v6
 
@@ -32,13 +43,17 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-          cache: pnpm
           registry-url: https://registry.npmjs.org
+          # Avoid cached credentials on release builds (npm trusted-publishing guidance)
+          package-manager-cache: false
+
+      - name: Ensure npm supports trusted publishing (>= 11.5.1)
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # npm publish runs the `prepack` script (pnpm build) and authenticates via
+      # OIDC — no NPM_TOKEN. Provenance is attached automatically.
       - name: Publish to npm
-        run: pnpm publish --provenance --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
