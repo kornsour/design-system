@@ -1,0 +1,92 @@
+/* Sprout — warm cream ground, fresh spring-green primary, sunny sand accent,
+   generous 16px radius, soft green-tinted shadows. A gentle, friendly, rounded
+   feel for young/approachable products. */
+@import "../base.css";
+@import "../fonts.css";
+
+:root {
+	--background: oklch(0.986 0.006 95);
+	--foreground: oklch(0.31 0.045 165);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.31 0.045 165);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.31 0.045 165);
+
+	--muted: oklch(0.955 0.014 150);
+	--muted-foreground: oklch(0.52 0.032 162);
+
+	--primary: oklch(0.52 0.108 156);
+	--primary-foreground: oklch(0.99 0.01 95);
+
+	--secondary: oklch(0.93 0.032 155);
+	--secondary-foreground: oklch(0.31 0.045 165);
+
+	--accent: oklch(0.905 0.055 82);
+	--accent-foreground: oklch(0.31 0.045 165);
+
+	--destructive: oklch(0.62 0.19 30);
+	--destructive-foreground: oklch(0.99 0.01 95);
+	--success: oklch(0.6 0.14 160);
+	--success-foreground: oklch(0.99 0.01 95);
+	--warning: oklch(0.81 0.142 82);
+	--warning-foreground: oklch(0.31 0.045 165);
+
+	--border: oklch(0.9 0.014 150);
+	--input: oklch(0.9 0.014 150);
+	--ring: oklch(0.55 0.1 158);
+
+	--radius: 1rem;
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0.31 0.045 165 / 0.06);
+	--shadow-sm: 0 1px 3px 0 oklch(0.31 0.045 165 / 0.1), 0 1px 2px -1px oklch(0.31 0.045 165 / 0.1);
+	--shadow-md:
+		0 6px 10px -2px oklch(0.31 0.045 165 / 0.1), 0 2px 4px -2px oklch(0.31 0.045 165 / 0.1);
+	--shadow-lg:
+		0 12px 20px -4px oklch(0.31 0.045 165 / 0.12), 0 4px 8px -4px oklch(0.31 0.045 165 / 0.12);
+
+	--font-geist-sans:
+		"Geist", ui-rounded, "SF Pro Rounded", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+		Roboto, sans-serif;
+	--font-geist-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+.dark {
+	--background: oklch(0.24 0.021 162);
+	--foreground: oklch(0.97 0.01 95);
+	--card: oklch(0.29 0.022 162);
+	--card-foreground: oklch(0.97 0.01 95);
+	--popover: oklch(0.29 0.022 162);
+	--popover-foreground: oklch(0.97 0.01 95);
+
+	--muted: oklch(0.31 0.022 162);
+	--muted-foreground: oklch(0.75 0.024 152);
+
+	--primary: oklch(0.72 0.138 152);
+	--primary-foreground: oklch(0.24 0.03 162);
+
+	--secondary: oklch(0.31 0.022 162);
+	--secondary-foreground: oklch(0.97 0.01 95);
+
+	--accent: oklch(0.42 0.05 84);
+	--accent-foreground: oklch(0.97 0.01 95);
+
+	--destructive: oklch(0.68 0.18 28);
+	--destructive-foreground: oklch(0.99 0.01 95);
+	--success: oklch(0.7 0.15 160);
+	--success-foreground: oklch(0.24 0.03 162);
+	--warning: oklch(0.82 0.15 84);
+	--warning-foreground: oklch(0.24 0.03 162);
+
+	--border: oklch(1 0 0 / 0.12);
+	--input: oklch(1 0 0 / 0.16);
+	--ring: oklch(0.72 0.138 152);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+	--shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.4), 0 1px 2px -1px oklch(0 0 0 / 0.4);
+	--shadow-md: 0 6px 10px -2px oklch(0 0 0 / 0.4), 0 2px 4px -2px oklch(0 0 0 / 0.4);
+	--shadow-lg: 0 12px 20px -4px oklch(0 0 0 / 0.5), 0 4px 8px -4px oklch(0 0 0 / 0.5);
+}
