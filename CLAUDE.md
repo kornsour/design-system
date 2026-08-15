@@ -16,13 +16,22 @@ shadows, light + dark mode.
 - **Components are theme-agnostic** — they use only semantic token utilities (`bg-primary`, `border-input`, …), never hard-coded colors. A new "feel" is a new token set, NOT new components.
 - **Tokens** are organized for multiple feels:
   - `src/styles/base.css` — feel-agnostic: Tailwind import, `@theme inline` token→utility mappings, `@source inline` utility vocabulary, base styles. Defines NO token values.
-  - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `cobalt.css`, `spartan.css`.
+  - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `cobalt.css`, `spartan.css`, `gestplate.css`, `sprout.css`, `warm.css`.
   - `src/tokens.ts` — the Modern Neutral values as a typed export, for code that needs token values directly (charts, canvas, email).
 - **Components** live in `src/components/ui/`, one file per component, re-exported from `src/components/ui/index.ts`. Within the repo, import via `@/components/ui`; consumers import from `design-system`.
   - Variants use `class-variance-authority` (cva); class merging uses `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
   - Interactive components (Dialog, Select, Checkbox, Switch, Tabs, Tooltip, Label, Avatar) wrap **Radix UI** primitives (the unified `radix-ui` package) and carry `"use client"`. Icons are from `lucide-react`. Enter/exit animations from `tw-animate-css`.
   - Components consume **semantic token utilities only** (`bg-primary`, `border-input`, …) — never hard-coded colors like `bg-indigo-600`. This is what lets the whole system re-skin by editing tokens.
-- **Dark mode** is class-based: the `dark` variant is defined in `globals.css` and toggled by adding the `dark` class to a root element (see `src/components/theme-toggle.tsx`).
+- **Dark mode** is class-based: the `dark` variant is defined in `src/styles/base.css` and
+  activated by putting the `dark` class on a root element. Every feel ships BOTH a `:root`
+  and a `.dark` token set, so mode is orthogonal to theme — one switch works for all of them.
+  The package exports the switching pieces (`src/components/ui/theme-toggle.tsx`):
+  - `<ThemeScript />` — blocking inline script for `<head>`; applies the stored choice before
+    first paint so there's no light flash. Needs `suppressHydrationWarning` on `<html>`.
+  - `<ThemeToggle />` — icon button; pass `withSystem` to cycle light → dark → system. The
+    sun/moon glyphs are picked in CSS off the `dark` class, not from state, so SSR markup and
+    first client render agree.
+  - `useTheme()` — `{ theme, resolvedTheme, setTheme, mounted }` for custom controls.
 - **Showcase**: `/design-system` (`src/app/design-system/page.tsx`) renders every component for visual review (`pnpm dev`). It uses the default theme via `src/app/globals.css` (which just `@import`s `themes/modern-neutral.css` — swap that import to preview another feel).
 
 ### Multiple feels (themes)
@@ -93,13 +102,13 @@ src/
 ├── app/                 # Next.js showcase app (layout, /design-system page)
 │   └── globals.css      # showcase stylesheet — just @imports the default theme
 ├── components/
-│   ├── ui/              # the component library (one file each) + index.ts barrel
-│   └── theme-toggle.tsx # showcase-only dark-mode toggle
+│   └── ui/              # the component library (one file each) + index.ts barrel
+│                        #   incl. theme-toggle.tsx (ThemeToggle/ThemeScript/useTheme)
 ├── styles/
 │   ├── base.css         # feel-agnostic: @theme mappings + @source inline + base styles
 │   ├── fonts.css        # Geist @font-face
 │   ├── fonts/           # vendored Geist woff2
-│   └── themes/          # one token set per feel (modern-neutral.css, cobalt.css, spartan.css)
+│   └── themes/          # one token set per feel (modern-neutral, cobalt, spartan, gestplate, sprout, warm)
 ├── lib/utils.ts         # cn()
 ├── tokens.ts            # typed token values (Modern Neutral)
 └── __tests__/           # unit tests

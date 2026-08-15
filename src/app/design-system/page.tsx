@@ -1,7 +1,6 @@
 "use client";
 
 import { Bell, Mail, Settings } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	Alert,
 	AlertDescription,
@@ -44,6 +43,7 @@ import {
 	TabsList,
 	TabsTrigger,
 	Textarea,
+	ThemeToggle,
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
