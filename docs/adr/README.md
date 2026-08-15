@@ -40,3 +40,4 @@ Each record uses a short [MADR](https://adr.github.io/madr/)-style template:
 | [0009](./0009-security-headers.md) | Set baseline HTTP security headers | Accepted |
 | [0010](./0010-unit-testing-vitest.md) | Unit test with Vitest in a Node environment | Accepted |
 | [0011](./0011-design-system-package.md) | Repurpose the repo as a distributable design-system package | Accepted |
+| [0012](./0012-publish-on-merge-to-main.md) | Publish to npm on merge to `main`, with the version bumped in the PR | Accepted |

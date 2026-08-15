@@ -63,19 +63,25 @@ Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `src/styles/packa
 
 ### Releasing to npm
 
-Publishing is automated by `.github/workflows/release.yml`: **publishing a GitHub
-Release** runs the workflow, which builds via `prepack` and runs `npm publish`.
-Auth is **npm trusted publishing (OIDC)** — no `NPM_TOKEN` secret — and provenance
-is attached automatically.
+**Merging to `main` publishes** ([ADR-0012](./docs/adr/0012-publish-on-merge-to-main.md)).
+`.github/workflows/release.yml` runs on every push to `main`, compares `version` in
+`package.json` against npm, and — only if that version is new — builds via `prepack`,
+runs `npm publish`, then creates the `v<version>` tag and GitHub Release from the
+publish. Auth is **npm trusted publishing (OIDC)** — no `NPM_TOKEN` secret — with
+provenance attached via `--provenance`.
 
-- **Bump `version` in `package.json` and commit it before cutting a Release.** The
-  workflow publishes whatever version is committed on the released ref; it does NOT
-  derive the version from the release tag. Cutting a Release without bumping
-  republishes the current version and npm rejects it (409). Use semver: patch for
-  fixes, minor for a new theme/component, major for breaking API changes.
-- Cut the Release from `main` after the version bump is merged. Tag convention is
-  `v<version>` (e.g. `v0.3.0`); the tag is cosmetic — `package.json` is the source
-  of truth for what gets published.
+- **Bump `version` in `package.json` in the PR itself.** That bump is what makes the
+  merge a release; without it the workflow finds the version already on npm and stops.
+  Use semver: patch for fixes, minor for a new theme/component, major for breaking
+  API changes. `version-guard.yml` fails any PR that changes what ships (`src/components`,
+  `src/styles`, `src/lib`, `src/tokens.ts`, `scripts/`, build config) without bumping;
+  showcase (`src/app/**`) and test edits are exempt, as they can't change `dist/`.
+- **Don't cut Releases by hand** — the workflow creates them. A hand-cut Release no
+  longer publishes anything.
+- Dependabot merges are safe: they never change `version`, so the run stops before
+  building. `version-guard.yml` skips Dependabot PRs entirely.
+- A merge whose publish failed partway can be retried with `workflow_dispatch` on
+  Release; the npm check makes re-runs idempotent.
 - One-time setup already done: the npm Trusted Publisher is configured for this repo
   + `release.yml` (org `kornsour`, repo `design-system`).
 

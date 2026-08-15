@@ -1,7 +1,23 @@
 name: Release
 
-# Publishes @kornorg/design-system to npm when a GitHub Release is published,
-# using npm Trusted Publishing (OIDC) — no long-lived NPM_TOKEN to manage.
+# Publishes @kornorg/design-system to npm when a merge to main carries a new
+# version, using npm Trusted Publishing (OIDC) — no long-lived NPM_TOKEN.
+#
+# The trigger is the MERGE, not a hand-cut GitHub Release: whenever main moves,
+# this compares package.json's version against what is already on npm and
+# publishes only if it is new. The tag and GitHub Release are then created FROM
+# the publish, rather than being the thing that causes it.
+#
+# Why the version still lives in package.json and is bumped by hand in the PR:
+# the `main` ruleset requires a pull request for every change and has no bypass
+# actors, so this workflow cannot push a bump commit back to main. Deriving the
+# version from commit messages instead would leave the committed package.json
+# stale and make git tags the real source of truth. Keeping the bump an explicit
+# line in the feature PR preserves package.json as the source of truth and keeps
+# the release decision reviewable — version-guard.yml stops it being forgotten.
+#
+# Dependabot merges are safe: they never change the version, so the check below
+# finds it already published and the job stops before building or touching npm.
 #
 # One-time setup on npmjs.com (package → Settings → Publishing access →
 # Trusted Publisher), for @kornorg/design-system:
@@ -17,12 +33,11 @@ name: Release
 # explicitly with --provenance: despite npm's docs claiming it is automatic under
 # trusted publishing, v0.3.0 published without an attestation until the flag was
 # added. Requires npm >= 11.5.1.
-#
-# The published version is whatever is in package.json — bump + commit it before
-# cutting the Release.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+  # Manual re-run, for recovering a merge whose publish failed partway.
+  workflow_dispatch:
 
 concurrency:
   group: release-${{ github.ref }}
@@ -33,15 +48,37 @@ jobs:
     name: Build & publish to npm
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write # create the tag + GitHub Release after publishing
       id-token: write # required for npm trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # release notes diff against the previous tag
+
+      # Decide whether this merge is a release BEFORE building or touching npm.
+      # `npm view <pkg>@<version> version` exits non-zero (E404) when the version
+      # does not exist — that is the publishable case.
+      - name: Check whether this version is already on npm
+        id: check
+        run: |
+          set -euo pipefail
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$NAME@$VERSION is already on npm — nothing to release."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::$NAME@$VERSION is new — releasing."
+          fi
 
       - name: Install pnpm
+        if: steps.check.outputs.published == 'false'
         uses: pnpm/action-setup@v6.0.10
 
       - name: Setup Node.js
+        if: steps.check.outputs.published == 'false'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -50,12 +87,29 @@ jobs:
           package-manager-cache: false
 
       - name: Ensure npm supports trusted publishing (>= 11.5.1)
+        if: steps.check.outputs.published == 'false'
         run: npm install -g npm@latest
 
       - name: Install dependencies
+        if: steps.check.outputs.published == 'false'
         run: pnpm install --frozen-lockfile
 
       # npm publish runs the `prepack` script (pnpm build) and authenticates via
       # OIDC — no NPM_TOKEN. --provenance attaches a build attestation.
       - name: Publish to npm
+        if: steps.check.outputs.published == 'false'
         run: npm publish --provenance
+
+      # Only after npm accepts the package, so a failed publish never leaves a
+      # tag behind claiming a release that does not exist.
+      - name: Tag and create the GitHub Release
+        if: steps.check.outputs.published == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh release create "v$VERSION" \
+            --target "$GITHUB_SHA" \
+            --title "v$VERSION" \
+            --generate-notes
