@@ -1,0 +1,92 @@
+/* Warm — a hearth-lit look: cream and clay neutrals on a warm hue axis, a
+ * toasted-amber primary, golden warning, olive-leaning success, 10px radius and
+ * brown-tinted shadows. Built to read equally well in light (cream ground,
+ * coffee-brown ink) and dark (warm near-black brown, glowing amber accent);
+ * neither mode is an afterthought. */
+@import "../base.css";
+@import "../fonts.css";
+
+:root {
+	--background: oklch(0.988 0.008 84);
+	--foreground: oklch(0.26 0.022 52);
+	--card: oklch(0.998 0.004 84);
+	--card-foreground: oklch(0.26 0.022 52);
+	--popover: oklch(0.998 0.004 84);
+	--popover-foreground: oklch(0.26 0.022 52);
+
+	--muted: oklch(0.957 0.016 80);
+	--muted-foreground: oklch(0.53 0.03 58);
+
+	--primary: oklch(0.53 0.145 52);
+	--primary-foreground: oklch(0.99 0.01 84);
+
+	--secondary: oklch(0.94 0.022 78);
+	--secondary-foreground: oklch(0.3 0.028 52);
+
+	--accent: oklch(0.925 0.038 72);
+	--accent-foreground: oklch(0.3 0.028 52);
+
+	--destructive: oklch(0.56 0.215 25);
+	--destructive-foreground: oklch(0.99 0.01 84);
+	--success: oklch(0.52 0.112 145);
+	--success-foreground: oklch(0.99 0.01 84);
+	--warning: oklch(0.78 0.15 78);
+	--warning-foreground: oklch(0.26 0.022 52);
+
+	--border: oklch(0.905 0.018 78);
+	--input: oklch(0.905 0.018 78);
+	--ring: oklch(0.53 0.145 52);
+
+	--radius: 0.625rem;
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0.26 0.022 52 / 0.06);
+	--shadow-sm: 0 1px 3px 0 oklch(0.26 0.022 52 / 0.1), 0 1px 2px -1px oklch(0.26 0.022 52 / 0.1);
+	--shadow-md: 0 4px 8px -2px oklch(0.26 0.022 52 / 0.1), 0 2px 4px -2px oklch(0.26 0.022 52 / 0.1);
+	--shadow-lg:
+		0 12px 20px -4px oklch(0.26 0.022 52 / 0.13), 0 4px 8px -4px oklch(0.26 0.022 52 / 0.13);
+
+	--font-geist-sans:
+		"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--font-geist-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+.dark {
+	--background: oklch(0.21 0.016 52);
+	--foreground: oklch(0.96 0.012 84);
+	--card: oklch(0.255 0.018 52);
+	--card-foreground: oklch(0.96 0.012 84);
+	--popover: oklch(0.255 0.018 52);
+	--popover-foreground: oklch(0.96 0.012 84);
+
+	--muted: oklch(0.285 0.018 52);
+	--muted-foreground: oklch(0.74 0.024 72);
+
+	--primary: oklch(0.72 0.145 62);
+	--primary-foreground: oklch(0.21 0.02 52);
+
+	--secondary: oklch(0.29 0.02 52);
+	--secondary-foreground: oklch(0.96 0.012 84);
+
+	--accent: oklch(0.37 0.038 58);
+	--accent-foreground: oklch(0.96 0.012 84);
+
+	--destructive: oklch(0.58 0.2 25);
+	--destructive-foreground: oklch(0.99 0.005 84);
+	--success: oklch(0.7 0.14 148);
+	--success-foreground: oklch(0.21 0.02 52);
+	--warning: oklch(0.82 0.155 80);
+	--warning-foreground: oklch(0.21 0.02 52);
+
+	--border: oklch(1 0 0 / 0.12);
+	--input: oklch(1 0 0 / 0.16);
+	--ring: oklch(0.72 0.145 62);
+
+	--shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.35);
+	--shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.45), 0 1px 2px -1px oklch(0 0 0 / 0.45);
+	--shadow-md: 0 4px 8px -2px oklch(0 0 0 / 0.45), 0 2px 4px -2px oklch(0 0 0 / 0.45);
+	--shadow-lg: 0 12px 20px -4px oklch(0 0 0 / 0.55), 0 4px 8px -4px oklch(0 0 0 / 0.5);
+}
