@@ -1,0 +1,74 @@
+name: Version guard
+
+# release.yml publishes on merge to main whenever package.json carries a version
+# that is not yet on npm. That makes the bump easy to forget: without it, a merge
+# that changes the published package silently ships nothing, and the change sits
+# on main looking released while npm still serves the previous code.
+#
+# This fails such a PR up front. It only fires for changes that actually reach
+# `dist/` — the showcase app (src/app/**) and tests are deliberately exempt,
+# since editing those cannot change what a consumer installs.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Version bump
+    runs-on: ubuntu-latest
+    # Dependabot never touches the paths below, and its PRs auto-merge; keep it
+    # out so a dependency bump is never asked for a package version bump.
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Require a version bump when the published package changes
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+
+          git fetch --no-tags origin "$BASE_REF"
+          MERGE_BASE=$(git merge-base FETCH_HEAD HEAD)
+
+          # Everything that ends up in dist/: the component entry, the token
+          # source, the theme stylesheets, and the build scripts/config.
+          PUBLISHABLE_PATHS='^(src/(components|styles|lib)/|src/tokens\.ts$|scripts/|tsup\.config\.ts$|tsconfig\.build\.json$)'
+
+          CHANGED=$(git diff --name-only "$MERGE_BASE" HEAD)
+          TOUCHED=$(echo "$CHANGED" | grep -E "$PUBLISHABLE_PATHS" || true)
+
+          if [ -z "$TOUCHED" ]; then
+            echo "::notice::No published-package files changed — no version bump needed."
+            exit 0
+          fi
+
+          git show "$MERGE_BASE:package.json" > /tmp/base-package.json
+          BASE_VERSION=$(node -p "require('/tmp/base-package.json').version")
+          HEAD_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$BASE_VERSION" = "$HEAD_VERSION" ]; then
+            echo "::error::This PR changes the published package but leaves the version at $HEAD_VERSION."
+            {
+              echo "### Version bump required"
+              echo
+              echo "These files change what \`@kornorg/design-system\` ships:"
+              echo
+              echo '```'
+              echo "$TOUCHED"
+              echo '```'
+              echo
+              echo "But \`package.json\` is still **$HEAD_VERSION**, which is already on npm."
+              echo "Merging as-is publishes nothing — \`release.yml\` skips a version it has seen."
+              echo
+              echo "Bump it (semver: patch for fixes, minor for a new theme or component,"
+              echo "major for a breaking API change) and commit that in this PR."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "::notice::Version bumped $BASE_VERSION → $HEAD_VERSION."
