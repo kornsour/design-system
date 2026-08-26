@@ -92,6 +92,11 @@ relevant ADR before changing foundational tooling**, and add a superseding ADR
 when you change a decision. ADR-0011 records the pivot to a package (and
 supersedes 0005/0006/0007). Runbooks are in `docs/maintenance/`.
 
+`docs/archive/` holds superseded and historical documentation. Its contents
+are historical records only — do not read them to understand the current
+state of the project or to guide new work; treat them purely as background on
+past decisions.
+
 ## Tech Stack
 
 - **Components**: React 19 + Radix UI (`radix-ui`), `lucide-react`, cva

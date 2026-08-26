@@ -78,7 +78,10 @@ pnpm e2e            # Playwright (local)
 
 Decisions live in [Architecture Decision Records](./docs/adr); operational
 runbooks (e.g. [lockfile recovery](./docs/maintenance/pnpm-lockfile.md)) in
-[`docs/maintenance/`](./docs/maintenance).
+[`docs/maintenance/`](./docs/maintenance). Superseded and historical
+documentation lives in [`docs/archive/`](./docs/archive) — its contents are
+historical records only and must not be used to understand the current state
+of the project or to inform new work.
 
 > Uses pnpm pinned via `packageManager`. Run `corepack enable` once so your
 > local pnpm matches the project ([ADR-0002](./docs/adr/0002-package-manager-pnpm-pinned.md)).
