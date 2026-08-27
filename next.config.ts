@@ -20,7 +20,22 @@ const securityHeaders = [
 	{ key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
 ];
 
+/**
+ * Static export for the showcase, used to publish `/` and `/design-system` to
+ * GitHub Pages (see .github/workflows/pages.yml). It's opt-in via STATIC_EXPORT
+ * so a plain `pnpm build:showcase` (and any future non-static host) keeps the
+ * headers() below working — `output: "export"` produces plain files with no
+ * server to apply them, and Next warns/no-ops headers() whenever it's set.
+ *
+ * GITHUB_PAGES_BASE_PATH is the "/<repo>" prefix a GitHub Pages *project* site
+ * serves under (e.g. "/design-system" for kornsour.github.io/design-system);
+ * leave unset for a custom domain or a user/org root site.
+ */
+const staticExport = process.env.STATIC_EXPORT === "1";
+const basePath = process.env.GITHUB_PAGES_BASE_PATH ?? "";
+
 const nextConfig: NextConfig = {
+	...(staticExport ? { output: "export" as const, basePath } : {}),
 	async headers() {
 		return [
 			{

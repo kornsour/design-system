@@ -4,6 +4,9 @@ A React + Tailwind CSS v4 component library, distributed as an installable
 package and kept in sync with [Claude Design](https://claude.ai/design) via
 `/design-sync`. Supports various themes.
 
+**[View the live showcase →](https://kornsour.github.io/design-system/)** — every
+component, all six feels, light and dark, from one page. No install required.
+
 ## Using it in an app
 
 ```bash

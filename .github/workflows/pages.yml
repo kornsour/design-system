@@ -1,0 +1,79 @@
+name: Deploy showcase to GitHub Pages
+
+# Publishes the static component showcase (`/`, `/design-system`) to GitHub
+# Pages on every push to main, so the components are viewable from a link
+# without cloning the repo (see issue #47).
+#
+# The showcase (src/app/**) is already fully static — `next build` with
+# `output: "export"` (opt-in via STATIC_EXPORT, see next.config.ts) just emits
+# it as plain files in `out/`, which this workflow uploads and deploys as-is.
+# No server, no other infrastructure.
+#
+# One-time setup (not done by this workflow): repo Settings → Pages → Source:
+# "GitHub Actions". Until that's set, this workflow builds successfully but the
+# deploy job has nothing to publish to.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/app/**"
+      - "next.config.ts"
+      - "public/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+# Only one Pages deployment at a time; let an in-flight one finish rather than
+# racing it, since a cancelled deploy can leave Pages serving a half-uploaded
+# build.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build showcase
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Resolves the base path this Pages site is served under (e.g.
+      # "/design-system" for a project site, "" for a custom domain) so the
+      # Next.js build emits links that work once deployed.
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - uses: pnpm/action-setup@v6.0.10
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build static export
+        env:
+          STATIC_EXPORT: "1"
+          GITHUB_PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: pnpm build:showcase
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

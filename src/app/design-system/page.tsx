@@ -1,6 +1,8 @@
 "use client";
 
 import { Bell, Mail, Settings } from "lucide-react";
+import { FeelPicker, FeelScript } from "./feel-picker";
+import "./feel-tokens.css";
 import {
 	Alert,
 	AlertDescription,
@@ -64,13 +66,17 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function DesignSystemPage() {
 	return (
 		<TooltipProvider>
+			<FeelScript />
 			<div className="mx-auto flex max-w-4xl flex-col gap-12 px-6 py-12">
 				<header className="flex items-center justify-between">
 					<div>
 						<h1 className="text-3xl font-semibold tracking-tight">Design System</h1>
-						<p className="text-muted-foreground">Modern Neutral — tokens & components</p>
+						<p className="text-muted-foreground">Tokens & components, in every feel</p>
 					</div>
-					<ThemeToggle />
+					<div className="flex items-center gap-2">
+						<FeelPicker />
+						<ThemeToggle />
+					</div>
 				</header>
 
 				<Section title="Buttons">
