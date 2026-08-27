@@ -99,9 +99,11 @@ The same components ship in multiple "feels" — pick one by importing its style
 | Cobalt | `@kornorg/design-system/themes/cobalt.css` | Dark-first studio look, electric cobalt-blue accent, 6px radius |
 | Spartan | `@kornorg/design-system/themes/spartan.css` | Zinc neutrals with a green accent (#18453B), 8px radius |
 | GestPlate | `@kornorg/design-system/themes/gestplate.css` | Warm-stone neutrals, teal accent, amber warmth, 8px radius — for health/wellness |
+| Sprout | `@kornorg/design-system/themes/sprout.css` | Warm cream ground, fresh spring-green primary, sunny sand accent, generous 16px radius — friendly and rounded |
+| Warm | `@kornorg/design-system/themes/warm.css` | Cream and clay neutrals, toasted-amber primary, golden warning, 10px radius — a hearth-lit look |
 
-`@kornorg/design-system/styles.css` re-exports Modern Neutral as the default. Each
-feel also has its own Claude Design project (see `.design-sync/`).
+`@kornorg/design-system/styles.css` re-exports Modern Neutral as the default. Some
+feels also have their own Claude Design project (see `.design-sync/NOTES.md` for which).
 
 ## Developing
 

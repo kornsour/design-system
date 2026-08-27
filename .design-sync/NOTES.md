@@ -6,13 +6,18 @@ This repo builds an installable package (`@kornorg/design-system`, ADR-0011) wit
 
 ## Feels → Claude Design projects
 
-One component library, one token set per feel, one Claude Design project per feel.
+One component library, one token set per feel — but not every feel has a Claude
+Design project yet. Only the three below are synced; `gestplate`, `sprout`, and
+`warm` are shipped themes with no project or `.design-sync/<feel>.json` config.
 
 | Feel | Config | projectId | global | cssEntry |
 |------|--------|-----------|--------|----------|
 | Modern Neutral (default) | `.design-sync/config.json` | `bfeff1a8-30b8-472e-a5a0-bb772e979018` | `ModernNeutral` | `dist/themes/modern-neutral.css` |
 | cobalt | `.design-sync/cobalt.json` | `ddc8cdc1-a922-4b59-a027-9c6bdce3db2f` | `Cobalt` | `dist/themes/cobalt.css` |
 | spartan | `.design-sync/spartan.json` | `9717fc63-74e8-4290-b8e0-4e4b12ecf7cc` | `Spartan` | `dist/themes/spartan.css` |
+
+No project yet: `gestplate`, `sprout`, `warm`. See "Adding a feel" below to set
+one up when needed.
 
 Everything else (pkg, dtsPropsFor, componentSrcMap, overrides, previews) is shared
 across feels — the configs differ only in projectId/global/cssEntry/readmeHeader.
