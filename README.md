@@ -27,8 +27,42 @@ export function Example() {
 
 Each theme stylesheet is self-contained (component styles, the full semantic-token
 utility vocabulary, and the Geist `@font-face` faces) — no Tailwind setup required
-in the consuming app. Dark mode: add `class="dark"` to a root element. Token values
-are also importable from `@kornorg/design-system/tokens`.
+in the consuming app. Token values are also importable from
+`@kornorg/design-system/tokens`.
+
+### Dark mode
+
+Every theme ships both a `:root` (light) and a `.dark` token set, so switching
+mode is just toggling the `dark` class on `<html>` — no per-theme wiring. The
+package exports the pieces to do that for you:
+
+- `<ThemeScript />` — a blocking inline script that applies the stored choice
+  before first paint (otherwise a light flash precedes a dark page). Render it
+  inside `<head>`, and add `suppressHydrationWarning` to `<html>` since the
+  class it writes is not present in the server-rendered markup.
+- `<ThemeToggle />` — an icon button that switches mode. Pass `withSystem` to
+  cycle light → dark → system instead of a plain light/dark flip.
+- `useTheme()` — `{ theme, resolvedTheme, setTheme, mounted }` for building a
+  custom control.
+
+```tsx
+// app/layout.tsx
+import { ThemeScript } from "@kornorg/design-system";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<head>
+				<ThemeScript />
+			</head>
+			<body>{children}</body>
+		</html>
+	);
+}
+```
+
+Dependency-free by design; if your app already uses `next-themes`, prefer that
+and use only the token layer from here (i.e. skip `class="dark"` manually).
 
 ### Feels (themes)
 
