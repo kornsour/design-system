@@ -155,6 +155,13 @@ pnpm e2e              # E2E tests (Playwright)
 ### Unit Tests (Vitest)
 - Tests live alongside source code or in `src/__tests__/`; name `*.test.ts(x)`
 - Use `describe` / `it` / `expect` from Vitest; `@/*` resolves to `src/*`
+- Default environment is `jsdom` (React Testing Library + `@testing-library/user-event`
+  are available for rendering/interacting with components); a file that needs no DOM
+  (e.g. `src/__tests__/theme-parity.test.ts`) opts out with a
+  `// @vitest-environment node` pragma at the top instead of paying for jsdom. See
+  [ADR-0013](./docs/adr/0013-component-testing-with-jsdom.md).
+- Every component in `src/components/ui/` has a colocated smoke-render test; Button,
+  Badge, and Alert also assert their `cva` variant classes.
 
 ### E2E Tests (Playwright)
 - Tests live in `e2e/`; name `*.spec.ts`

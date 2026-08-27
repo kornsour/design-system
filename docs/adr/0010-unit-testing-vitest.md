@@ -1,6 +1,6 @@
 # ADR-0010: Unit test with Vitest in a Node environment
 
-- Status: Accepted
+- Status: Superseded by [ADR-0013](./0013-component-testing-with-jsdom.md)
 - Date: 2026-06-19
 
 ## Context
