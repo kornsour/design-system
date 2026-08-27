@@ -35,6 +35,7 @@ const COLOR_PROPS = [
 	"border",
 	"input",
 	"ring",
+	"overlay",
 ];
 
 function toCamelCase(kebab) {

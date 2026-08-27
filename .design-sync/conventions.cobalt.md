@@ -37,6 +37,7 @@ light/dark and carry the cobalt feel. Full vocabulary in `styles.css` (each also
 | Success | `bg-success` | `text-success-foreground` | — |
 | Warning | `bg-warning` | `text-warning-foreground` | — |
 | Form field | — | — | `border-input` |
+| Modal / drawer scrim | `bg-overlay` | — | — |
 
 Radius (tight): `rounded-sm` · `rounded-md` · `rounded-lg` (6px) · `rounded-xl` ·
 `rounded-full`. Elevation: `shadow-xs/sm/md/lg`. Standard Tailwind layout/spacing

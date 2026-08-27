@@ -39,6 +39,7 @@ light/dark and keep designs on-brand. The full vocabulary shipped in
 | Success | `bg-success` | `text-success-foreground` | — |
 | Warning | `bg-warning` | `text-warning-foreground` | — |
 | Form field | — | — | `border-input` |
+| Modal / drawer scrim | `bg-overlay` | — | — |
 
 Radius: `rounded-sm` (4px) · `rounded-md` (6px) · `rounded-lg` (8px) ·
 `rounded-xl` (12px) · `rounded-full`. Elevation: `shadow-xs` · `shadow-sm` ·

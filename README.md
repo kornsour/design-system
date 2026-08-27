@@ -145,6 +145,7 @@ pnpm e2e            # Playwright (local)
 
 ## Documentation
 
+Released versions and what changed in each are in [`CHANGELOG.md`](./CHANGELOG.md).
 Decisions live in [Architecture Decision Records](./docs/adr); operational
 runbooks (e.g. [lockfile recovery](./docs/maintenance/pnpm-lockfile.md)) in
 [`docs/maintenance/`](./docs/maintenance). Superseded and historical

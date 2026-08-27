@@ -41,6 +41,7 @@ interface ColorTokens {
 	border: string;
 	input: string;
 	ring: string;
+	overlay: string;
 }
 interface ShadowTokens {
 	xs: string;

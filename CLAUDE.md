@@ -76,6 +76,11 @@ provenance attached via `--provenance`.
   API changes. `version-guard.yml` fails any PR that changes what ships (`src/components`,
   `src/styles`, `src/lib`, `src/tokens.ts`, `scripts/`, build config) without bumping;
   showcase (`src/app/**`) and test edits are exempt, as they can't change `dist/`.
+- **Add the matching entry to `CHANGELOG.md` in the same PR** — a `## [<version>]`
+  section in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
+  `version-guard.yml` fails the PR if that section is missing. `release.yml` passes
+  that section as the GitHub Release's `--notes-file`, so it is what a consumer on
+  `^0.x` actually reads — write it for them, not as a commit-message recap.
 - **Don't cut Releases by hand** — the workflow creates them. A hand-cut Release no
   longer publishes anything.
 - Dependabot merges are safe: they never change `version`, so the run stops before
@@ -109,6 +114,7 @@ past decisions.
 ## Project Structure
 
 ```
+CHANGELOG.md             # Keep a Changelog entries; release.yml publishes these as Release notes
 src/
 ├── app/                 # Next.js showcase app (layout, /design-system page)
 │   └── globals.css      # showcase stylesheet — just @imports the default theme
