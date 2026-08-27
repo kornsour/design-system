@@ -38,6 +38,7 @@ Each record uses a short [MADR](https://adr.github.io/madr/)-style template:
 | 0007 | Use next-safe-action for Server Actions | Superseded by ADR-0011 |
 | [0008](./0008-e2e-local-only.md) | Run Playwright E2E locally, not in CI | Accepted |
 | [0009](./0009-security-headers.md) | Set baseline HTTP security headers | Accepted |
-| [0010](./0010-unit-testing-vitest.md) | Unit test with Vitest in a Node environment | Accepted |
+| 0010 | Unit test with Vitest in a Node environment | Superseded by ADR-0013 |
 | [0011](./0011-design-system-package.md) | Repurpose the repo as a distributable design-system package | Accepted |
 | [0012](./0012-publish-on-merge-to-main.md) | Publish to npm on merge to `main`, with the version bumped in the PR | Accepted |
+| [0013](./0013-component-testing-with-jsdom.md) | Test components with jsdom + Testing Library | Accepted |
