@@ -36,6 +36,7 @@
 	--border: oklch(0.905 0.018 78);
 	--input: oklch(0.905 0.018 78);
 	--ring: oklch(0.53 0.145 52);
+	--overlay: oklch(0.26 0.022 52 / 0.5);
 
 	--radius: 0.625rem;
 	--radius-sm: calc(var(--radius) - 4px);
@@ -84,6 +85,7 @@
 	--border: oklch(1 0 0 / 0.12);
 	--input: oklch(1 0 0 / 0.16);
 	--ring: oklch(0.72 0.145 62);
+	--overlay: oklch(0 0 0 / 0.7);
 
 	--shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.35);
 	--shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.45), 0 1px 2px -1px oklch(0 0 0 / 0.45);

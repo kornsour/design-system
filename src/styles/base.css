@@ -15,6 +15,7 @@
 @source inline("{,hover:,focus-visible:}{bg,text,border,ring}-{background,foreground,card,card-foreground,popover,popover-foreground,primary,primary-foreground,secondary,secondary-foreground,muted,muted-foreground,accent,accent-foreground,destructive,destructive-foreground,success,success-foreground,warning,warning-foreground,border,input,ring}");
 @source inline("rounded-{sm,md,lg,xl,full}");
 @source inline("shadow-{xs,sm,md,lg}");
+@source inline("bg-overlay");
 
 /* Map semantic tokens → Tailwind utilities. The var() targets are defined by
    whichever theme imports this file. */
@@ -42,6 +43,7 @@
 	--color-border: var(--border);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
+	--color-overlay: var(--overlay);
 
 	--radius-sm: var(--radius-sm);
 	--radius-md: var(--radius-md);
