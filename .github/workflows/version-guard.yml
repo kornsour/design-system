@@ -8,6 +8,10 @@ name: Version guard
 # This fails such a PR up front. It only fires for changes that actually reach
 # `dist/` — the showcase app (src/app/**) and tests are deliberately exempt,
 # since editing those cannot change what a consumer installs.
+#
+# Whenever it does require a bump, it also requires a matching CHANGELOG.md
+# section for the new version: release.yml publishes that section as the
+# GitHub Release notes, so a bump with no changelog entry would ship with none.
 on:
   pull_request:
 
@@ -72,3 +76,23 @@ jobs:
           fi
 
           echo "::notice::Version bumped $BASE_VERSION → $HEAD_VERSION."
+
+          # A version bump alone leaves the release without human-readable notes —
+          # release.yml passes the matching CHANGELOG.md section as --notes.
+          # Require that section to exist in the same PR.
+          if ! grep -qF "## [$HEAD_VERSION]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no entry for $HEAD_VERSION."
+            {
+              echo "### Changelog entry required"
+              echo
+              echo "\`package.json\` bumped $BASE_VERSION → $HEAD_VERSION, but \`CHANGELOG.md\`"
+              echo "has no \`## [$HEAD_VERSION]\` section."
+              echo
+              echo "\`release.yml\` publishes that section as the GitHub Release notes, so every"
+              echo "published version needs one. Add it in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)"
+              echo "format in this PR."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "::notice::CHANGELOG.md has an entry for $HEAD_VERSION."
