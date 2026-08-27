@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-08-27
+
+### Added
+
+- Accessibility is now verified in CI instead of assumed ([ADR-0014](./docs/adr/0014-accessibility-verified-in-ci.md)): an `@axe-core/playwright` scan of the full `/design-system` showcase, in both light and dark, runs in a dedicated workflow (`.github/workflows/accessibility.yml`); a WCAG contrast check over every theme's foreground/background token pairs runs in `pnpm test` and is recorded in [`docs/accessibility/contrast.md`](./docs/accessibility/contrast.md) (regenerate after a token change with the new `pnpm check:contrast`).
+
+### Fixed
+
+- `Table`'s horizontally scrollable wrapper had no way to reach it by keyboard, failing WCAG 2.1.1 — added `tabIndex`, `role="region"`, and an `aria-label`.
+- Nudged `muted-foreground` and dark-mode `destructive` a few hundredths of L across the `cobalt`, `gestplate`, `modern-neutral`, and `spartan` themes to close token pairs that fell just short of WCAG AA contrast.
+
 ## [0.6.1] - 2026-08-27
 
 ### Changed
@@ -60,7 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   bundled Geist fonts, distributed as an installable package with multi-theme
   support and an initial theme (later renamed `cobalt` in 0.2.0).
 
-[Unreleased]: https://github.com/kornsour/design-system/compare/v0.6.1...HEAD
+[Unreleased]: https://github.com/kornsour/design-system/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/kornsour/design-system/compare/v0.7.0...v0.7.1
 [0.6.1]: https://github.com/kornsour/design-system/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/kornsour/design-system/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/kornsour/design-system/compare/v0.4.0...v0.5.0
