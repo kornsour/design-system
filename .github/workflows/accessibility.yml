@@ -1,0 +1,39 @@
+name: Accessibility
+
+# ADR-0008 keeps Playwright E2E out of the general CI run. This is the
+# dedicated, narrowly-scoped exception it anticipated: only the axe-core scan
+# in e2e/accessibility.spec.ts, not the full E2E suite, so it stays fast and
+# doesn't reopen the flake surface ADR-0008 was written to avoid. See
+# ADR-0014.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  axe:
+    name: axe-core scan of /design-system
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6.0.10
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright's Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run axe-core against the showcase (light + dark)
+        run: pnpm e2e e2e/accessibility.spec.ts
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

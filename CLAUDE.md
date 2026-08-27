@@ -174,3 +174,20 @@ pnpm e2e              # E2E tests (Playwright)
 ### E2E Tests (Playwright)
 - Tests live in `e2e/`; name `*.spec.ts`
 - Playwright auto-starts the dev server; only Chromium is configured by default
+- The suite stays local-only, not run in CI (ADR-0008) — with one exception:
+  `e2e/accessibility.spec.ts` (axe-core against `/design-system` in light +
+  dark) runs in its own dedicated workflow, `.github/workflows/accessibility.yml`
+  (ADR-0014). Seed the theme via `localStorage` before `page.goto` (see
+  `gotoWithTheme` in that spec) rather than toggling the `dark` class at
+  runtime — every themed element's `transition-colors` fires at once on a
+  runtime toggle, and axe can catch that transition mid-flight as a false
+  contrast failure.
+
+### Accessibility
+- Radix primitives are the accessibility layer (see README's Components
+  table for which components have one) — CI verifies that, per ADR-0014,
+  rather than assuming it: `e2e/accessibility.spec.ts` (axe-core) plus
+  `src/__tests__/theme-contrast.test.ts` (WCAG contrast over every theme's
+  color tokens, backed by `scripts/lib/color-contrast.mjs`). Run
+  `pnpm check:contrast` after changing any theme's color tokens to
+  regenerate `docs/accessibility/contrast.md`.
