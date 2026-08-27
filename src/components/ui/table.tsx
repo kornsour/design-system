@@ -3,7 +3,19 @@ import { cn } from "@/lib/utils";
 
 export function Table({ className, ...props }: React.ComponentProps<"table">) {
 	return (
-		<div className="relative w-full overflow-x-auto">
+		// This is the standard fix for axe's scrollable-region-focusable rule
+		// (WCAG 2.1.1): a horizontally scrollable region needs to be reachable by
+		// keyboard, hence tabIndex + role="region" + aria-label on an otherwise
+		// non-interactive div rather than a bare <section> (which has no
+		// equivalent for naming an unlabeled region).
+		// biome-ignore lint/a11y/useSemanticElements: see above
+		<div
+			className="relative w-full overflow-x-auto"
+			// biome-ignore lint/a11y/noNoninteractiveTabindex: see comment above the div
+			tabIndex={0}
+			role="region"
+			aria-label="Scrollable table"
+		>
 			<table className={cn("w-full caption-bottom text-sm", className)} {...props} />
 		</div>
 	);

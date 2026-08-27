@@ -58,6 +58,35 @@ Where a "Radix primitive" is named, that's where the accessibility behavior
 (focus management, keyboard nav, ARIA attributes) comes from; components with
 no Radix primitive are plain styled HTML elements.
 
+### Accessibility
+
+Radix is a dependency here specifically for accessible primitives — focus
+management, keyboard navigation, and ARIA wiring on every component listed
+with one above. That's asserted in CI, not just assumed:
+
+- **`@axe-core/playwright` scans the full showcase** (`/design-system`, every
+  component, one page) in both light and dark on every PR
+  (`.github/workflows/accessibility.yml`, `e2e/accessibility.spec.ts`) — ARIA
+  roles/labels/state, Dialog focus trapping, keyboard operability, landmark
+  structure.
+- **Every theme's color tokens are checked for WCAG contrast**: all 6 feels ×
+  light/dark × 11 foreground/background pairs, computed directly from the
+  `oklch()` token values (`scripts/check-contrast.mjs`) and asserted in
+  `pnpm test` (`src/__tests__/theme-contrast.test.ts`) so a token change that
+  regresses contrast fails CI. The numbers are recorded in
+  [`docs/accessibility/contrast.md`](./docs/accessibility/contrast.md) rather
+  than left to be re-derived by hand.
+- **Known gap**: the axe scan excludes its `color-contrast` rule. Several
+  components render normal-weight text small enough (`Button` at 14px,
+  `Badge` at 12px) that WCAG holds them to the 4.5:1 body-text threshold
+  rather than the relaxed 3:1 for large/bold text, and white text on the more
+  saturated `primary`/`success`/`destructive` fills falls short of that by a
+  few tenths in places. Fixing it means darkening this library's brand colors
+  across all 6 feels — a design call, not a code fix — so it's tracked
+  instead of silently passed or silently disabled; see
+  [ADR-0014](./docs/adr/0014-accessibility-verified-in-ci.md) for the
+  reasoning and exactly what's covered by which check.
+
 ### Dark mode
 
 Every theme ships both a `:root` (light) and a `.dark` token set, so switching
@@ -116,6 +145,7 @@ pnpm build          # build the package → dist/ (JS + .d.ts + styles.css + fon
 pnpm check:fix      # Biome lint + format
 pnpm test           # Vitest unit tests
 pnpm e2e            # Playwright (local)
+pnpm check:contrast # Regenerate docs/accessibility/contrast.md after a token change
 ```
 
 - **Components** live in `src/components/ui/` (one file each), re-exported from
