@@ -15,10 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title: {
-		default: "App",
-		template: "%s · App",
+		default: "Design System",
+		template: "%s · Design System",
 	},
-	description: "A Next.js application.",
+	description:
+		"Modern Neutral — a React + Tailwind CSS design system with tokens, theming, and accessible components.",
 };
 
 export default function RootLayout({
