@@ -19,6 +19,11 @@ name: Release
 # Dependabot merges are safe: they never change the version, so the check below
 # finds it already published and the job stops before building or touching npm.
 #
+# The GitHub Release's notes come from CHANGELOG.md's section for this version,
+# not `gh release create --generate-notes` — a generated merged-PR list is mostly
+# Dependabot noise and says nothing about what a consumer on `^0.x` actually gets.
+# version-guard.yml requires that section to exist on any PR that bumps the version.
+#
 # One-time setup on npmjs.com (package → Settings → Publishing access →
 # Trusted Publisher), for @kornorg/design-system:
 #   Publisher:         GitHub Actions
@@ -53,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # release notes diff against the previous tag
+          fetch-depth: 0 # full history, so a manual workflow_dispatch recovery run can still tag correctly
 
       # Decide whether this merge is a release BEFORE building or touching npm.
       # `npm view <pkg>@<version> version` exits non-zero (E404) when the version
@@ -100,6 +105,33 @@ jobs:
         if: steps.check.outputs.published == 'false'
         run: npm publish --provenance
 
+      # version-guard.yml requires a matching "## [<version>]" section in
+      # CHANGELOG.md on any PR that bumps the version, so this should always
+      # find one. Extract just that section (up to the next "## [" heading) so
+      # the release notes are the human-written summary, not a merged-PR list.
+      - name: Extract changelog section for this version
+        if: steps.check.outputs.published == 'false'
+        id: changelog
+        env:
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          set -euo pipefail
+          NOTES_FILE="$RUNNER_TEMP/release-notes.md"
+          awk -v ver="$VERSION" '
+            /^## \[/ {
+              if (capturing) exit
+              if ($0 ~ "^## \\[" ver "\\]") { capturing = 1; next }
+            }
+            capturing { print }
+          ' CHANGELOG.md > "$NOTES_FILE"
+
+          if [ ! -s "$NOTES_FILE" ]; then
+            echo "::error::CHANGELOG.md has no '## [$VERSION]' section — version-guard.yml should have caught this on the PR."
+            exit 1
+          fi
+
+          echo "path=$NOTES_FILE" >> "$GITHUB_OUTPUT"
+
       # Only after npm accepts the package, so a failed publish never leaves a
       # tag behind claiming a release that does not exist.
       - name: Tag and create the GitHub Release
@@ -107,9 +139,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.check.outputs.version }}
+          NOTES_FILE: ${{ steps.changelog.outputs.path }}
         run: |
           set -euo pipefail
           gh release create "v$VERSION" \
             --target "$GITHUB_SHA" \
             --title "v$VERSION" \
-            --generate-notes
+            --notes-file "$NOTES_FILE"
