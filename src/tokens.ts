@@ -1,58 +1,18 @@
 /**
- * Design tokens — typed source of truth.
+ * Design tokens — typed source of truth for the values that have no CSS
+ * backing (spacing scale, type scale, font weights).
  *
- * These mirror the CSS custom properties declared in `src/app/globals.css`.
- * Components consume tokens through Tailwind utility classes (e.g. `bg-primary`);
- * this file is for code that needs token values directly — chart libraries,
- * canvas/SVG rendering, email templates, or programmatic theming.
- *
- * Keep this in sync with globals.css when values change.
+ * Color, radius, and font-family values live in a theme's CSS custom
+ * properties (`src/styles/themes/<feel>.css`) instead — components consume
+ * those through Tailwind utility classes (e.g. `bg-primary`), which is the
+ * only place a `var(--x)` reference resolves. The published `tokens` export
+ * needs to work without a DOM (chart libraries, canvas/SVG rendering, email
+ * templates), so `scripts/build-css.mjs` resolves the default theme's CSS to
+ * literal values at build time and appends them to this file's build output
+ * as `light` / `dark` (see `scripts/generate-tokens.mjs`), plus `radii` and
+ * `fontFamily`. Import them from `@kornorg/design-system/tokens` alongside
+ * the tokens defined here — this source file only has the pieces below.
  */
-
-/** Semantic color tokens. Values are the light-mode references; the dark
- *  variant is applied at runtime via the `.dark` class in globals.css. */
-export const colors = {
-	background: "var(--background)",
-	foreground: "var(--foreground)",
-	card: "var(--card)",
-	cardForeground: "var(--card-foreground)",
-	popover: "var(--popover)",
-	popoverForeground: "var(--popover-foreground)",
-	muted: "var(--muted)",
-	mutedForeground: "var(--muted-foreground)",
-	primary: "var(--primary)",
-	primaryForeground: "var(--primary-foreground)",
-	secondary: "var(--secondary)",
-	secondaryForeground: "var(--secondary-foreground)",
-	accent: "var(--accent)",
-	accentForeground: "var(--accent-foreground)",
-	destructive: "var(--destructive)",
-	destructiveForeground: "var(--destructive-foreground)",
-	success: "var(--success)",
-	successForeground: "var(--success-foreground)",
-	warning: "var(--warning)",
-	warningForeground: "var(--warning-foreground)",
-	border: "var(--border)",
-	input: "var(--input)",
-	ring: "var(--ring)",
-} as const;
-
-/** Border-radius scale. Base radius is 0.5rem (8px). */
-export const radii = {
-	sm: "var(--radius-sm)", // 4px
-	md: "var(--radius-md)", // 6px
-	lg: "var(--radius-lg)", // 8px
-	xl: "var(--radius-xl)", // 12px
-	full: "9999px",
-} as const;
-
-/** Soft elevation shadow scale. */
-export const shadows = {
-	xs: "var(--shadow-xs)",
-	sm: "var(--shadow-sm)",
-	md: "var(--shadow-md)",
-	lg: "var(--shadow-lg)",
-} as const;
 
 /**
  * Spacing scale (rem). Matches Tailwind's default 4px step so utility classes
@@ -92,20 +52,3 @@ export const fontWeight = {
 	semibold: "600",
 	bold: "700",
 } as const;
-
-export const fontFamily = {
-	sans: "var(--font-geist-sans), system-ui, sans-serif",
-	mono: "var(--font-geist-mono), ui-monospace, monospace",
-} as const;
-
-export const tokens = {
-	colors,
-	radii,
-	shadows,
-	spacing,
-	fontSize,
-	fontWeight,
-	fontFamily,
-} as const;
-
-export type Tokens = typeof tokens;
