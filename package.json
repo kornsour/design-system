@@ -1,6 +1,6 @@
 {
   "name": "@kornorg/design-system",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Modern Neutral — a React + Tailwind CSS design system (components, tokens, Geist fonts).",
   "license": "MIT",
   "homepage": "https://kornsour.github.io/design-system/",

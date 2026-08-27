@@ -31,7 +31,10 @@ export function Example() {
 Each theme stylesheet is self-contained (component styles, the full semantic-token
 utility vocabulary, and the Geist `@font-face` faces) — no Tailwind setup required
 in the consuming app. Token values are also importable from
-`@kornorg/design-system/tokens`.
+`@kornorg/design-system/tokens` — `light` and `dark` give resolved literal values
+(real oklch colors, real pixel radii) for code that has no CSS to resolve a
+`var(--x)` reference against: chart libraries, canvas/SVG rendering, email
+templates.
 
 ### Components
 
@@ -149,8 +152,10 @@ pnpm check:contrast # Regenerate docs/accessibility/contrast.md after a token ch
 ```
 
 - **Components** live in `src/components/ui/` (one file each), re-exported from
-  `src/components/ui/index.ts`. Styling tokens are in `src/app/globals.css`
-  (mirrored as typed values in `src/tokens.ts`).
+  `src/components/ui/index.ts`. Styling tokens are in `src/styles/themes/*.css`
+  (one file per feel); `src/tokens.ts` types the values with no CSS backing
+  (spacing, type scale, font weights) and `scripts/build-css.mjs` resolves the
+  default theme's CSS to literal values for the rest.
 - **The package build** (tsup + Tailwind CLI) emits `dist/` — see
   [ADR-0011](./docs/adr/0011-design-system-package.md).
 - **Adding/changing components**: edit source, run `pnpm build`, then re-sync to

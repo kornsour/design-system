@@ -17,7 +17,7 @@ shadows, light + dark mode.
 - **Tokens** are organized for multiple feels:
   - `src/styles/base.css` — feel-agnostic: Tailwind import, `@theme inline` token→utility mappings, `@source inline` utility vocabulary, base styles. Defines NO token values.
   - `src/styles/themes/<feel>.css` — one per feel; `@import`s base + fonts and supplies the `:root`/`.dark` token values (colors, radius, shadows, fonts). Today: `modern-neutral.css`, `cobalt.css`, `spartan.css`, `gestplate.css`, `sprout.css`, `warm.css`.
-  - `src/tokens.ts` — the Modern Neutral values as a typed export, for code that needs token values directly (charts, canvas, email).
+  - `src/tokens.ts` — types the values with no CSS backing (spacing, type scale, font weights). The build (`scripts/build-css.mjs`) resolves the rest — Modern Neutral's colors, radii, and font families — from CSS to literal values and appends them as `light`/`dark`/`radii`/`fontFamily` on the built `dist/tokens.mjs`, for code that needs real values, not `var()` references (charts, canvas, email).
 - **Components** live in `src/components/ui/`, one file per component, re-exported from `src/components/ui/index.ts`. Within the repo, import via `@/components/ui`; consumers import from `design-system`.
   - Variants use `class-variance-authority` (cva); class merging uses `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
   - Interactive components (Dialog, Select, Checkbox, Switch, Tabs, Tooltip, Label, Avatar) wrap **Radix UI** primitives (the unified `radix-ui` package) and carry `"use client"`. Icons are from `lucide-react`. Enter/exit animations from `tw-animate-css`.
@@ -51,10 +51,10 @@ To add a feel: copy a theme file, change the token values, `pnpm build` (it's pi
 ## Package build & distribution
 
 `pnpm build` produces the installable package in `dist/` via **tsup** + the
-Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `src/styles/package.css`, `scripts/postbuild.mjs`):
+Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `scripts/build-css.mjs`, `scripts/postbuild.mjs`):
 
 - `dist/index.mjs` + `dist/index.d.ts` — components. react/react-dom are peers; radix-ui/lucide/cva/clsx/tailwind-merge are externalized. `"use client"` is prepended post-build (esbuild strips a bundled banner).
-- `dist/tokens.mjs` + `.d.ts` — typed tokens.
+- `dist/tokens.mjs` + `.d.ts` — typed tokens. tsup compiles `src/tokens.ts` (spacing, type scale, font weights — the values with no CSS backing); `scripts/build-css.mjs` then appends `light`/`dark`/`radii`/`fontFamily`, resolved from the default theme's CSS to literal values (see `scripts/generate-tokens.mjs`) so the export works outside a DOM styling context (chart libraries, canvas/SVG rendering, email templates).
 - `dist/themes/<feel>.css` (+ `dist/themes/fonts/`) — one Tailwind-compiled stylesheet per feel: utilities + that feel's tokens + Geist `@font-face`. Self-contained; consumers need no Tailwind setup. `dist/styles.css` re-exports the default feel. Built by `scripts/build-css.mjs` (auto-discovers `src/styles/themes/*`).
 
 `package.json` `exports` expose `.`, `./tokens`, `./styles.css`, and `./themes/*`
@@ -127,11 +127,13 @@ src/
 │   ├── fonts/           # vendored Geist woff2
 │   └── themes/          # one token set per feel (modern-neutral, cobalt, spartan, gestplate, sprout, warm)
 ├── lib/utils.ts         # cn()
-├── tokens.ts            # typed token values (Modern Neutral)
+├── tokens.ts            # typed tokens with no CSS backing (spacing, type scale, weights)
 └── __tests__/           # unit tests
 scripts/
 ├── postbuild.mjs        # rename .d.mts→.d.ts, prepend "use client"
-└── build-css.mjs        # compile every theme → dist/themes/<feel>.css
+├── build-css.mjs        # compile every theme → dist/themes/<feel>.css; also
+│                        #   appends resolved tokens to dist/tokens.{mjs,d.ts}
+└── generate-tokens.mjs  # theme CSS → literal light/dark/radii/fontFamily values
 .design-sync/            # /design-sync inputs: config.json (modern-neutral),
                          #   cobalt.json, previews/, conventions*.md, NOTES
 dist/                    # build output (gitignored): index.mjs/.d.ts, tokens, themes/

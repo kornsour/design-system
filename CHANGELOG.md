@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-08-27
+
+### Changed
+
+- `@kornorg/design-system/tokens` now exports `light` and `dark` — resolved
+  literal color and shadow values for the default theme's two modes — in
+  place of the old mode-less `colors` and `shadows` exports, which held
+  `var(--x)` references that only resolved inside a DOM styling context.
+  `radii` and `fontFamily` are unchanged. These values are now generated at
+  build time from the theme's CSS (`scripts/generate-tokens.mjs` +
+  `scripts/build-css.mjs`) instead of hand-maintained in `src/tokens.ts`, so
+  the exported tokens can no longer drift from what the CSS actually ships.
+  `src/tokens.ts` itself now only types the values with no CSS backing
+  (spacing, type scale, font weights).
+
 ## [0.7.1] - 2026-08-27
 
 ### Added
@@ -71,7 +86,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   bundled Geist fonts, distributed as an installable package with multi-theme
   support and an initial theme (later renamed `cobalt` in 0.2.0).
 
-[Unreleased]: https://github.com/kornsour/design-system/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/kornsour/design-system/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/kornsour/design-system/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/kornsour/design-system/compare/v0.7.0...v0.7.1
 [0.6.1]: https://github.com/kornsour/design-system/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/kornsour/design-system/compare/v0.5.0...v0.6.0
