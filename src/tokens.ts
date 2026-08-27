@@ -35,6 +35,7 @@ export const colors = {
 	border: "var(--border)",
 	input: "var(--input)",
 	ring: "var(--ring)",
+	overlay: "var(--overlay)",
 } as const;
 
 /** Border-radius scale. Base radius is 0.5rem (8px). */
