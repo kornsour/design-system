@@ -30,6 +30,31 @@ utility vocabulary, and the Geist `@font-face` faces) — no Tailwind setup requ
 in the consuming app. Token values are also importable from
 `@kornorg/design-system/tokens`.
 
+### Components
+
+| Component | Sub-parts | Needs a provider | Radix primitive |
+|---|---|---|---|
+| `Alert` | `AlertTitle`, `AlertDescription` | — | — |
+| `Avatar` | `AvatarImage`, `AvatarFallback` | — | `Avatar` |
+| `Badge` | — | — | — |
+| `Button` | — | — | `Slot` (for `asChild`) |
+| `Card` | `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | — | — |
+| `Checkbox` | — | — | `Checkbox` |
+| `Dialog` | `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` | — | `Dialog` |
+| `Input` | — | — | — |
+| `Label` | — | — | `Label` |
+| `Select` | `SelectGroup`, `SelectValue`, `SelectTrigger`, `SelectContent`, `SelectLabel`, `SelectItem` | — | `Select` |
+| `Switch` | — | — | `Switch` |
+| `Table` | `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption` | — | — |
+| `Tabs` | `TabsList`, `TabsTrigger`, `TabsContent` | — | `Tabs` |
+| `Textarea` | — | — | — |
+| `Tooltip` | `TooltipTrigger`, `TooltipContent` | `TooltipProvider` (wrap once near the app root) | `Tooltip` |
+
+`ThemeToggle` is also exported as a component — see [Dark mode](#dark-mode) below.
+Where a "Radix primitive" is named, that's where the accessibility behavior
+(focus management, keyboard nav, ARIA attributes) comes from; components with
+no Radix primitive are plain styled HTML elements.
+
 ### Dark mode
 
 Every theme ships both a `:root` (light) and a `.dark` token set, so switching
