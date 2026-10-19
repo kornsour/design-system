@@ -68,7 +68,7 @@ importers:
         version: 6.1.2(vite@8.1.5(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0))
       geist:
         specifier: ^1.7.2
-        version: 1.7.2(next@16.4.2(@playwright/test@1.64.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
+        version: 1.8.1(next@16.4.2(@playwright/test@1.64.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
       jsdom:
         specifier: ^30.0.1
         version: 30.1.2
@@ -2031,8 +2031,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  geist@1.7.2:
-    resolution: {integrity: sha512-Gu5lDFa3pLRyoBlBPf0QIFHVdWAnpco7fS1bJm41jyLPFoguBgiubseUN2oLXMgqZ7uxAxDoXcHMhCY/fOTTgg==}
+  geist@1.8.1:
+    resolution: {integrity: sha512-oSBhuzTvwZqGAZVC4swTRo61G/JHojtEVNR3DCToU+4nUBkG48ndKNvj4Ma7zZ+OlJkYDLT66HS+hrFszkovTg==}
     peerDependencies:
       next: '>=13.2.0'
 
@@ -4373,7 +4373,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  geist@1.7.2(next@16.4.2(@playwright/test@1.64.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)):
+  geist@1.8.1(next@16.4.2(@playwright/test@1.64.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)):
     dependencies:
       next: 16.4.2(@playwright/test@1.64.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
 
