@@ -156,8 +156,9 @@ pnpm check:contrast # Regenerate docs/accessibility/contrast.md after a token ch
   (one file per feel); `src/tokens.ts` types the values with no CSS backing
   (spacing, type scale, font weights) and `scripts/build-css.mjs` resolves the
   default theme's CSS to literal values for the rest.
-- **The package build** (tsup + Tailwind CLI) emits `dist/` — see
-  [ADR-0011](./docs/adr/0011-design-system-package.md).
+- **The package build** (tsdown + Tailwind CLI) emits `dist/` — see
+  [ADR-0011](./docs/adr/0011-design-system-package.md) and
+  [ADR-0015](./docs/adr/0015-typescript-7-and-tsdown.md) (TypeScript 7, tsdown).
 - **Adding/changing components**: edit source, run `pnpm build`, then re-sync to
   Claude Design with `/design-sync` (it reads the built `dist/`). The sync inputs
   live in `.design-sync/`.
@@ -168,7 +169,7 @@ pnpm check:contrast # Regenerate docs/accessibility/contrast.md after a token ch
 |------|---------|
 | [React 19](https://react.dev) + [Radix UI](https://www.radix-ui.com) | Components |
 | [Tailwind CSS v4](https://tailwindcss.com) | Token-driven styling |
-| [tsup](https://tsup.egoist.dev) | Library build (ESM + `.d.ts`) |
+| [tsdown](https://tsdown.dev) + [TypeScript 7](https://www.typescriptlang.org) | Library build (ESM + `.d.ts`) |
 | [Biome](https://biomejs.dev) | Linter + formatter |
 | [Vitest](https://vitest.dev) / [Playwright](https://playwright.dev) | Tests |
 | [Next.js](https://nextjs.org) | Component showcase / docs surface |

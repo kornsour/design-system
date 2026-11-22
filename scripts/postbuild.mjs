@@ -1,8 +1,8 @@
 // Post-build fixups for the package dist:
-//  1. Rename tsup's .d.mts declarations to .d.ts so the `types` exports
+//  1. Rename tsdown's .d.mts declarations to .d.ts so the `types` exports
 //     condition (and the design-sync converter's .d.ts glob) resolve them.
-//  2. Prepend "use client" to the component entry — esbuild strips a banner
-//     directive when bundling, so it must be added after the bundle is written.
+//  2. Prepend "use client" to the component entry — bundling drops per-module
+//     directives, so it must be added after the bundle is written.
 import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 
 for (const name of ["index", "tokens"]) {

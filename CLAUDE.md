@@ -50,11 +50,11 @@ To add a feel: copy a theme file, change the token values, `pnpm build` (it's pi
 
 ## Package build & distribution
 
-`pnpm build` produces the installable package in `dist/` via **tsup** + the
-Tailwind CLI (config: `tsup.config.ts`, `tsconfig.build.json`, `scripts/build-css.mjs`, `scripts/postbuild.mjs`):
+`pnpm build` produces the installable package in `dist/` via **tsdown** + the
+Tailwind CLI (config: `tsdown.config.mts`, `tsconfig.build.json`, `scripts/build-css.mjs`, `scripts/postbuild.mjs`):
 
-- `dist/index.mjs` + `dist/index.d.ts` — components. react/react-dom are peers; radix-ui/lucide/cva/clsx/tailwind-merge are externalized. `"use client"` is prepended post-build (esbuild strips a bundled banner).
-- `dist/tokens.mjs` + `.d.ts` — typed tokens. tsup compiles `src/tokens.ts` (spacing, type scale, font weights — the values with no CSS backing); `scripts/build-css.mjs` then appends `light`/`dark`/`radii`/`fontFamily`, resolved from the default theme's CSS to literal values (see `scripts/generate-tokens.mjs`) so the export works outside a DOM styling context (chart libraries, canvas/SVG rendering, email templates).
+- `dist/index.mjs` + `dist/index.d.ts` — components. react/react-dom are peers; radix-ui/lucide/cva/clsx/tailwind-merge are externalized. `"use client"` is prepended post-build (bundling can't keep per-module directives).
+- `dist/tokens.mjs` + `.d.ts` — typed tokens. tsdown compiles `src/tokens.ts` (spacing, type scale, font weights — the values with no CSS backing); `scripts/build-css.mjs` then appends `light`/`dark`/`radii`/`fontFamily`, resolved from the default theme's CSS to literal values (see `scripts/generate-tokens.mjs`) so the export works outside a DOM styling context (chart libraries, canvas/SVG rendering, email templates).
 - `dist/themes/<feel>.css` (+ `dist/themes/fonts/`) — one Tailwind-compiled stylesheet per feel: utilities + that feel's tokens + Geist `@font-face`. Self-contained; consumers need no Tailwind setup. `dist/styles.css` re-exports the default feel. Built by `scripts/build-css.mjs` (auto-discovers `src/styles/themes/*`).
 
 `package.json` `exports` expose `.`, `./tokens`, `./styles.css`, and `./themes/*`
@@ -106,7 +106,8 @@ past decisions.
 
 - **Components**: React 19 + Radix UI (`radix-ui`), `lucide-react`, cva
 - **Styling**: Tailwind CSS v4 (token-driven), `tw-animate-css`, Geist fonts
-- **Package build**: tsup (ESM + `.d.ts`) + `@tailwindcss/cli`
+- **Package build**: tsdown (ESM + `.d.ts`, declarations emitted by TypeScript 7's native `tsc`) + `@tailwindcss/cli` — see [ADR-0015](./docs/adr/0015-typescript-7-and-tsdown.md)
+- **TypeScript 7**: no `baseUrl`, `./`-relative `paths`, ambient types listed in `compilerOptions.types`, explicit `rootDir` in `tsconfig.build.json`; no JS compiler API — a tool that needs it gets `@typescript/typescript6`, not a downgrade
 - **Showcase**: Next.js 16 (App Router, Turbopack)
 - **Lint/Format**: Biome  ·  **Unit**: Vitest  ·  **E2E**: Playwright
 - **Package Manager**: pnpm
@@ -144,7 +145,7 @@ e2e/                     # Playwright tests
 
 ```bash
 pnpm dev              # Showcase dev server (Turbopack)
-pnpm build            # Build the package → dist/ (tsup + CSS + fonts)
+pnpm build            # Build the package → dist/ (tsdown + CSS + fonts)
 pnpm build:showcase   # Production build of the Next showcase app
 pnpm check            # Biome checks (lint + format)
 pnpm check:fix        # Auto-fix Biome issues

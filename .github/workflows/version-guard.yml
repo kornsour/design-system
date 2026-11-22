@@ -41,7 +41,7 @@ jobs:
 
           # Everything that ends up in dist/: the component entry, the token
           # source, the theme stylesheets, and the build scripts/config.
-          PUBLISHABLE_PATHS='^(src/(components|styles|lib)/|src/tokens\.ts$|scripts/|tsup\.config\.ts$|tsconfig\.build\.json$)'
+          PUBLISHABLE_PATHS='^(src/(components|styles|lib)/|src/tokens\.ts$|scripts/|tsdown\.config\.mts$|tsup\.config\.ts$|tsconfig\.build\.json$)'
 
           CHANGED=$(git diff --name-only "$MERGE_BASE" HEAD)
           TOUCHED=$(echo "$CHANGED" | grep -E "$PUBLISHABLE_PATHS" || true)

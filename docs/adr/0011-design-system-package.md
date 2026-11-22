@@ -1,6 +1,6 @@
 # ADR-0011: Repurpose the repo as a distributable design-system package
 
-- Status: Accepted
+- Status: Accepted (build tool: superseded by [ADR-0015](./0015-typescript-7-and-tsdown.md) — tsdown, not tsup)
 - Date: 2026-06-19
 
 ## Context
