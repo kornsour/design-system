@@ -6,8 +6,8 @@
 //
 // Also resolves the default theme's CSS custom properties to literal values
 // (see scripts/generate-tokens.mjs) and appends them to dist/tokens.{mjs,d.ts}
-// — tsup already built those from src/tokens.ts (spacing/fontSize/fontWeight,
-// which have no CSS backing); this runs after tsup so it can add the
+// — tsdown already built those from src/tokens.ts (spacing/fontSize/fontWeight,
+// which have no CSS backing); this runs after tsdown so it can add the
 // theme-derived `light`/`dark`/`radii`/`fontFamily` exports and the combined
 // `tokens` object without either build step needing to know about the other's
 // output ahead of time.
@@ -50,9 +50,9 @@ function jsObjectLiteral(obj, indent = "\t") {
 }
 
 /** Render a flat string-valued object as a TS object *type*, one key per line
- *  with literal string types (mirrors what tsup/dts emits for an `as const`
+ *  with literal string types (mirrors what the dts build emits for an `as const`
  *  object, so `light`/`dark`/`radii`/`fontFamily` read the same as the
- *  tsup-built `spacing`/`fontSize`/`fontWeight` above them in this file). */
+ *  tsdown-built `spacing`/`fontSize`/`fontWeight` above them in this file). */
 function tsObjectType(obj, indent = "\t") {
 	const entries = Object.entries(obj)
 		.map(([key, value]) => `${indent}readonly ${key}: ${JSON.stringify(value)};`)

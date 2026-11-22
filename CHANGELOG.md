@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-11-21
+
+### Changed
+
+- The package is now built with TypeScript 7 and tsdown (was TypeScript 6 and
+  tsup) — see [ADR-0015](./docs/adr/0015-typescript-7-and-tsdown.md). No API
+  change: every export from `@kornorg/design-system` and
+  `@kornorg/design-system/tokens` has the same type as in 0.8.0, `dist/` has
+  the same files, and the stylesheets are byte-identical. The `.d.ts` files
+  are laid out differently (TypeScript 7's declaration emitter), which only
+  matters if you diff them.
+
 ## [0.8.0] - 2026-08-27
 
 ### Changed

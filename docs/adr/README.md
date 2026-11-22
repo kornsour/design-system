@@ -43,3 +43,4 @@ Each record uses a short [MADR](https://adr.github.io/madr/)-style template:
 | [0012](./0012-publish-on-merge-to-main.md) | Publish to npm on merge to `main`, with the version bumped in the PR | Accepted |
 | [0013](./0013-component-testing-with-jsdom.md) | Test components with jsdom + Testing Library | Accepted |
 | [0014](./0014-accessibility-verified-in-ci.md) | Verify accessibility in CI instead of assuming it | Accepted |
+| [0015](./0015-typescript-7-and-tsdown.md) | TypeScript 7, and tsdown instead of tsup for the package build | Accepted |
