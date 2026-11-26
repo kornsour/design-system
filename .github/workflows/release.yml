@@ -56,7 +56,7 @@ jobs:
       contents: write # create the tag + GitHub Release after publishing
       id-token: write # required for npm trusted publishing (OIDC)
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0 # full history, so a manual workflow_dispatch recovery run can still tag correctly
 
@@ -80,11 +80,11 @@ jobs:
 
       - name: Install pnpm
         if: steps.check.outputs.published == 'false'
-        uses: pnpm/action-setup@v6.1.1
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
       - name: Setup Node.js
         if: steps.check.outputs.published == 'false'
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
